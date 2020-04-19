@@ -1,0 +1,17 @@
+{
+  "mysql": {
+    "host": "",
+    "port": 3306,
+    "username": "",
+    "password": "",
+    "database": ""
+  },
+  "redis": {
+    "host": "",
+    "port": 6379,
+    "auth": ""
+  },
+  "jwt": {
+    "key": "ljie,er9:09+_LJl-05l"
+  }
+}

@@ -1,0 +1,18 @@
+package permissions
+
+import (
+	"github.com/gin-gonic/gin"
+	"myedu/work/serializer"
+	"net/http"
+)
+
+func GetPermissions(c *gin.Context) {
+	var menus []string = []string{"Home", "system", "Administrator"}
+	c.JSON(http.StatusOK, serializer.Response{
+		Code:  0,
+		Data:  menus,
+		Msg:   "ok",
+		Error: nil,
+	})
+	return
+}

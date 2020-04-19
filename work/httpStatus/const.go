@@ -1,0 +1,34 @@
+package httpStatus
+// 自定义状态码
+const (
+	SUCCESS_STATUS                  = 0
+	ACCESS_TOKEN_FAIL               = 40002
+	ACCESS_TOKEN_EXPIRE             = 40003
+	PARAM_WRONG                     = 40004
+	WRONG_EMAIL_PASSWORD			= 40041
+	WRONG_PASSWORD                  = 40005
+	WRONG_PERMISSION_NO_SELECT      = 40006
+	WRONG_REPEAT_FORM               = 40007
+	PASSWD_TOO_SHORT                = 40008
+	WRONG_PASSWD_SAMPLE             = 40009
+	MOBILE_NOT_OK                   = 40010
+	VERIFYCODE_EXPIRE               = 40011
+	VERIFYCODE_ERROR                = 40012
+	WRONG_PASSWD_CONFIRM            = 40013
+	WRONG_NAME_EXIST                = 40014
+	WRONG_SUPER_ROLE_OPERATION      = 40015
+	WRONG_NAME_ILLEGAL_CHAR_CHINESE = 40016
+	FILE_UPLOAD_FAIL                = 40017
+	FILE_UPLOAD_KEEP                = 40018
+	WRONG_NAME_ILLEGAL_CHAR         = 40019
+	WRONG_PATH_EXIST                = 40020
+	WRONG_PERMISSION_EMPTY          = 40021
+	WRONG_PERMISSION_PATH_EMPTY     = 40022
+	WRONG_PERMISSION_NO_HAVE        = 40023
+	WRONG_LOGRECORD_NO_CHECK        = 40024
+	FAIL_MERGE_FILE                 = 40025
+	FAIL_SUFFIX_FILE                = 40026
+	GETTING_DATA_FAIL               = 40027
+	OPERATION_WRONG                 = 50001
+)
+

@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"myedu/conf"
+	"go-edu/conf"
 	"os"
 	"time"
 	"github.com/jinzhu/gorm"
@@ -17,7 +17,7 @@ const ConfigPath = "conf/config.json"
 
 func Init()  {
 	InitMysql()
-	InitConfig()
+	//InitConfig()
 }
 
 func InitMysql()  {

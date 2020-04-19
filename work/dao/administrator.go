@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"myedu/work/base/inits"
-	"myedu/work/entity"
+	"go-edu/work/base/inits"
+	"go-edu/work/entity"
 )
 
 type AdminstratorDao struct {}

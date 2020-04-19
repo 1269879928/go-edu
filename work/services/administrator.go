@@ -2,11 +2,11 @@ package services
 
 import (
 	"fmt"
-	"myedu/work/common"
-	"myedu/work/dao"
-	"myedu/work/entity"
-	"myedu/work/httpStatus"
-	"myedu/work/serializer"
+	"go-edu/work/common"
+	"go-edu/work/dao"
+	"go-edu/work/entity"
+	"go-edu/work/httpStatus"
+	"go-edu/work/serializer"
 	"strconv"
 	"time"
 )

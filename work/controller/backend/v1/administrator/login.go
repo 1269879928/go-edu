@@ -3,8 +3,8 @@ package administrator
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"myedu/work/common"
-	"myedu/work/services"
+	"go-edu/work/common"
+	"go-edu/work/services"
 	"net/http"
 )
 

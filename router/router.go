@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"myedu/work/controller/backend/v1/administrator"
-	"myedu/work/controller/backend/v1/permissions"
-	"myedu/work/middlewares"
+	"go-edu/work/controller/backend/v1/administrator"
+	"go-edu/work/controller/backend/v1/permissions"
+	"go-edu/work/middlewares"
 )
 
 func Router() (r *gin.Engine)  {

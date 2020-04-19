@@ -3,8 +3,8 @@ package middlewares
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"myedu/work/common"
-	"myedu/work/serializer"
+	"go-edu/work/common"
+	"go-edu/work/serializer"
 )
 
 func AuthRequired() gin.HandlerFunc {

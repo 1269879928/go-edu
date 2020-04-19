@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"myedu/router"
-	"myedu/work/base/inits"
+	"go-edu/router"
+	"go-edu/work/base/inits"
 )
 
 func main() {

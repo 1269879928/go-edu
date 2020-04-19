@@ -2,7 +2,7 @@ package permissions
 
 import (
 	"github.com/gin-gonic/gin"
-	"myedu/work/serializer"
+	"go-edu/work/serializer"
 	"net/http"
 )
 

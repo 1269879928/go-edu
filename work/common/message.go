@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-playground/validator/v10"
-	"myedu/work/serializer"
+	"go-edu/work/serializer"
 )
 
 func ValidateResponse(err error) serializer.Response {

@@ -1,4 +1,4 @@
-module myedu
+module go-edu
 
 go 1.12
 

@@ -5,47 +5,50 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-edu/work/common"
 	"go-edu/work/serializer"
+	"net/http"
 )
 
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("url", c.Request.RequestURI)
 		token := c.GetHeader("Authorization")
-		if len(token) > 20{
-			fmt.Println("1",)
-			result, err := common.VerifyJWT(token)
-			if err != nil {
-				c.Abort()
-				c.JSON(401, serializer.Response{
-					Code: 401,
-					Msg:    "token is invalid",
-				})
-				return
-			}
-			remoteAddr := c.ClientIP()
-			if result.Ip != remoteAddr {
-				c.Abort()
-				c.JSON(401, serializer.Response{
-					Code: 401,
-					Msg:    "token is invalid",
-				})
-				return
-			}
-			fmt.Printf("r:%s, s:%s\n", remoteAddr, result.Ip )
-			fmt.Printf("info:%#v\n", result)
-			c.Set("Email", result.Email)
-			c.Set("UserId", result.UserId)
-			c.Next()
-		} else {
+		if len(token) < 20 {
 			c.Abort()
-			fmt.Println("2")
-			c.JSON(401, serializer.Response{
+			c.JSON(http.StatusUnauthorized, serializer.Response{
 				Code: 401,
-				Msg:    "token is invalid",
+				Msg:  "token is invalid",
 			})
 			return
 		}
-
+		result, err := common.VerifyJWT(token)
+		if err != nil {
+			c.Abort()
+			c.JSON(http.StatusUnauthorized, serializer.Response{
+				Code: http.StatusUnauthorized,
+				Msg:  "token is invalid",
+			})
+			return
+		}
+		remoteAddr := c.ClientIP()
+		if result.Ip != remoteAddr {
+			c.Abort()
+			c.JSON(http.StatusUnauthorized, serializer.Response{
+				Code: 401,
+				Msg:  "token is invalid",
+			})
+			return
+		}
+		c.Set("Email", result.Email)
+		c.Set("UserId", result.UserId)
+		//c.Set("Token", result.Token)
+		c.Next()
+		refreshJwt(c)
 		//c.Abort()
 	}
+}
+func refreshJwt(c *gin.Context) {
+	fmt.Printf("c::%#v\n", c.ContentType())
+	c.JSON(200, gin.H{
+		"token": c.Keys["Token"],
+	})
+
 }

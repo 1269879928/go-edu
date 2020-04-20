@@ -19,7 +19,8 @@ func Router() (r *gin.Engine)  {
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
-		v1.Use(middlewares.AuthRequired())
+		authorized := r.Group("/")
+		authorized.Use(middlewares.AuthRequired())
 		{
 			v1.GET("/administrator", administrator.Index)
 			v1.POST("/administrator", administrator.Create)

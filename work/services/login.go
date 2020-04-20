@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"go-edu/work/common"
 	"go-edu/work/dao"
 	"go-edu/work/httpStatus"
@@ -13,18 +12,11 @@ type LoginForm struct {
 	Password string `form:"password" binding:"required"`
 	RemoteAddr string
 }
+// 登录
 func (l *LoginForm)Login() (result *serializer.Response) {
 
 	admin, err :=dao.AdminstratorObj.GetAdministratorByEmail(l.Email)
-	//if err == sql.ErrNoRows {
-	//	result = &serializer.Response{
-	//		Code:  httpStatus.WRONG_EMAIL_PASSWORD,
-	//		Msg:   httpStatus.GetCode2Msg(httpStatus.WRONG_EMAIL_PASSWORD),
-	//	}
-	//	return
-	//}
 	if err != nil || admin.ID == 0{
-		fmt.Println("err123 ", err)
 		result = &serializer.Response{
 			Code:  httpStatus.WRONG_EMAIL_PASSWORD,
 			Msg:   httpStatus.GetCode2Msg(httpStatus.WRONG_EMAIL_PASSWORD),
@@ -40,12 +32,11 @@ func (l *LoginForm)Login() (result *serializer.Response) {
 		}
 		return
 	}
-	menus := []string{"Home", "Administrator"}
 	jwt := common.GenJWT(admin.ID, admin.Email, l.RemoteAddr)
 	result = &serializer.Response{
 		Code:  httpStatus.SUCCESS_STATUS,
 		Msg:   "login success",
-		Data: map[string]interface{}{"menus":menus, "token": jwt},
+		Data: map[string]interface{}{"token": jwt},
 	}
 	return
 }

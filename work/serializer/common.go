@@ -6,4 +6,5 @@ type Response struct {
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
 	Error  interface{} `json:"error"`
+	Token string `json:"token"`
 }

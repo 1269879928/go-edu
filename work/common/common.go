@@ -2,8 +2,8 @@ package common
 
 import (
 	"errors"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"go-edu/work/base/inits"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
@@ -27,10 +27,11 @@ type CurrentUserInfo struct {
 	UserId uint64 `json:"user_id"`
 	Ip string `json:"ip"`
 	ExpiresAt int64 `json:"expires_at"`
+	Token string `json:"token"`
 }
 func GenJWT(userId uint64, email string, ip string) string  {
-	key := "ljie,er9:09+_LJl-05l"
-	mySigningKey := []byte(key)
+
+	mySigningKey := []byte(inits.Config.Jwt.Key)
 	type MyCustomClaims struct {
 		Email string `json:"email"`
 		UserId uint64 `json:"user_id"`
@@ -44,14 +45,13 @@ func GenJWT(userId uint64, email string, ip string) string  {
 		userId,
 		ip,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + 60,
-			Issuer:    "test",
+			ExpiresAt: time.Now().Unix() + inits.Config.Jwt.Expires,
+			Issuer:    "shjting",
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256 , claims)
-	jwt, err := token.SignedString(mySigningKey)
-	fmt.Println("err:", err)
+	jwt, _ := token.SignedString(mySigningKey)
 	return jwt
 }
 func VerifyJWT(tokenString string) (info *CurrentUserInfo, err error)  {
@@ -63,14 +63,24 @@ func VerifyJWT(tokenString string) (info *CurrentUserInfo, err error)  {
 	}
 	// sample token is expired.  override time so it parses as valid
 	token, err := jwt.ParseWithClaims(tokenString, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("ljie,er9:09+_LJl-05l"), nil
+		return []byte(inits.Config.Jwt.Key), nil
 	})
 	if claims, ok := token.Claims.(*MyCustomClaims); ok && token.Valid {
+		//fmt.Printf("%#v, %#v\n", claims, token.Raw)
+		email := claims.Email
+		userId := claims.UserId
+		expiresAt :=claims.StandardClaims.ExpiresAt
+		ip := claims.Ip
+		// 当前token即将过期，生成新token
+		if expiresAt - time.Now().Unix() < 20 {
+			tokenString = GenJWT(userId, email, ip)
+		}
 		info = &CurrentUserInfo{
-			Email:  claims.Email,
-			UserId: claims.UserId,
-			Ip:     claims.Ip,
-			ExpiresAt: claims.StandardClaims.ExpiresAt,
+			Email:  email,
+			UserId: userId,
+			Ip:     ip,
+			ExpiresAt: expiresAt,
+			Token: tokenString,
 		}
 	} else {
 		err = errors.New("token is Valid")

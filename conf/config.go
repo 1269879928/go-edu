@@ -9,11 +9,12 @@ type Mysql struct {
 }
 type Redis struct {
 	Host string `json:"host"`
-	Post int64 `json:"post"`
+	Port int64 `json:"port"`
 	Auth string `json:"auth"`
 }
 type Jwt struct {
 	Key string `json:"key"`
+	Expires int64 `json:"expires"`
 }
 
 type Config struct {

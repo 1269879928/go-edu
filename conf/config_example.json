@@ -12,7 +12,7 @@
     "auth": ""
   },
   "jwt": {
-    "key": "ljie,er9:09+_LJl-05l",
+    "key": "",
     "expires": 600
   }
 }

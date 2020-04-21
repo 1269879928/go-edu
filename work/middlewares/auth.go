@@ -41,8 +41,7 @@ func AuthRequired() gin.HandlerFunc {
 		c.Set("UserId", result.UserId)
 		//c.Set("Token", result.Token)
 		c.Next()
-		refreshJwt(c)
-		//c.Abort()
+		//refreshJwt(c)
 	}
 }
 func refreshJwt(c *gin.Context) {

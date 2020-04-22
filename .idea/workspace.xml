@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2842e7bc-4971-447f-b456-5b9db30572e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/work/controller/backend/v1/administratorRoles/administratorRoles.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/work/dao/administratorRoles.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/work/services/administratorRoles.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/work/dao/administratorPermission.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/work/services/administratorPermissions.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/config_example.json" beforeDir="false" afterPath="$PROJECT_DIR$/conf/config_example.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/permissions/permissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/permissions/permissions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/entity/administratorRoles.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/entity/administratorRoles.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/middlewares/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/middlewares/auth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/serializer/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/serializer/common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/administrator/administrator.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/administrator/administrator.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/permissions/permissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/administratorPermissions/permissions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/entity/administratorPermissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/entity/administratorPermissions.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -89,9 +89,9 @@ func Edit(c *gin.Context) {
 		if err := c.ShouldBindJSON(&params); err != nil {
 			fmt.Println(err)
 			c.JSON(http.StatusOK, serializer.Response{
-				Code: httpStatus.PARAM_WRONG,
+				Code: httpStatus.OPERATION_WRONG,
 				Data: nil,
-				Msg:  httpStatus.GetCode2Msg(httpStatus.PARAM_WRONG),
+				Msg:  httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
 			})
 			return
 		}
@@ -107,8 +107,17 @@ func Edit(c *gin.Context) {
 		}
 		err := dao.AdminstratorObj.UpdateById(params.Id, data)
 		if err != nil {
+			c.JSON(http.StatusOK, serializer.Response{
+				Code: httpStatus.PARAM_WRONG,
+				Data: nil,
+				Msg:  httpStatus.GetCode2Msg(httpStatus.PARAM_WRONG),
+			})
 			return
 		}
+		c.JSON(http.StatusOK, serializer.Response{
+			Code: httpStatus.SUCCESS_STATUS,
+			Msg:  httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		})
 		return
 	}
 	idTmp := c.Param("id")

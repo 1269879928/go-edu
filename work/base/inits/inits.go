@@ -22,9 +22,9 @@ func Init()  {
 }
 
 func InitMysql()  {
-	//mysqlDsn := os.Getenv("MysqlDSN")
+	mysqlDsn := os.Getenv("MysqlDSN")
 	//fmt.Println("mysql dsn:", mysqlDsn)
-	db, err := gorm.Open("mysql", "mysql57:shijinting0510@tcp(106.53.5.146:3306)/edu?charset=utf8mb4&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", mysqlDsn)
 	if err != nil {
 		fmt.Errorf("connect mysql failed, err:%v\n", err)
 		return

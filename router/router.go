@@ -38,6 +38,7 @@ func Router() (r *gin.Engine)  {
 			// 权限
 			v1.GET("/permissions", administratorPermissions.GetPermissions)
 			v1.GET("/permission", administratorPermissions.Index)
+			v1.GET("/permission-list", administratorPermissions.PermissionsList)
 			v1.POST("/permission", administratorPermissions.Create)
 			v1.GET("/permission/:id/edit", administratorPermissions.Edit)
 			v1.PATCH("/permission", administratorPermissions.Update)

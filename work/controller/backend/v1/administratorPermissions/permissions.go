@@ -24,15 +24,15 @@ func GetPermissions(c *gin.Context) {
 
 // 首页
 func Index(c *gin.Context) {
-	pageTmp := c.DefaultQuery("page", "1")
-	pageSizeTmp := c.DefaultQuery("pageSize", "20")
-	page,_ := strconv.Atoi(pageTmp)
-	pageSize,_ := strconv.Atoi(pageSizeTmp)
+	//pageTmp := c.DefaultQuery("page", "1")
+	//pageSizeTmp := c.DefaultQuery("pageSize", "20")
+	//page,_ := strconv.Atoi(pageTmp)
+	//pageSize,_ := strconv.Atoi(pageSizeTmp)
 	obj := &services.IndexPermissionService{
-		Page: page,
-		PageSize: pageSize,
+		//Page: page,
+		//PageSize: pageSize,
 	}
-	result := obj.Index()
+	result := obj.Index(0)
 	c.JSON(http.StatusOK, result)
 }
 // 新增
@@ -44,6 +44,13 @@ func Create(c *gin.Context)  {
 		return
 	}
 	resp := service.Create()
+	c.JSON(http.StatusOK, resp)
+}
+func PermissionsList(c *gin.Context)  {
+	_id := c.DefaultQuery("id", "0")
+	id,_ := strconv.Atoi(_id)
+	obj := &services.IndexPermissionService{}
+	resp := obj.Index(id)
 	c.JSON(http.StatusOK, resp)
 }
 // 更新

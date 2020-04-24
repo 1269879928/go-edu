@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2842e7bc-4971-447f-b456-5b9db30572e2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/work/dao/administratorPermission.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/work/services/administratorPermissions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/administrator/administrator.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/administrator/administrator.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/permissions/permissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/administratorPermissions/permissions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/base/inits/inits.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/base/inits/inits.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/controller/backend/v1/administratorPermissions/permissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/controller/backend/v1/administratorPermissions/permissions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/dao/administratorPermission.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/dao/administratorPermission.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/work/entity/administratorPermissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/entity/administratorPermissions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/work/services/administratorPermissions.go" beforeDir="false" afterPath="$PROJECT_DIR$/work/services/administratorPermissions.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,9 +101,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="447" y="145" width="782" height="600" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1587309684736" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1587455683351">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1587699150955">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1587455683351" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1587699150955" />
   </component>
 </project>

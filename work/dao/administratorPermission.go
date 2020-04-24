@@ -12,17 +12,21 @@ func (*administratorPermissionsDao)CreatePermission(data *entity.AdministratorPe
 	return
 }
 func (*administratorPermissionsDao)GetPermissionById(id int)(data entity.AdministratorPermissions, err error)  {
-	err = inits.Gorm.Model(&entity.AdministratorPermissions{}).Select("id, permission_name, description, method, url, unique_key, created_at").Where("id = ?", id).First(&data).Error
+	err = inits.Gorm.Model(&entity.AdministratorPermissions{}).Select("id, permission_name, description, method, url, unique_key, created_at, pid").Where("id = ?", id).First(&data).Error
 	return
 }
 func (*administratorPermissionsDao)DeletePermission(data *entity.AdministratorPermissions) (err error)  {
 	err = inits.Gorm.Delete(data).Error
 	return
 }
-func  (*administratorPermissionsDao)GetPermissionByPage(page, pageSize int)(list []entity.AdministratorPermissions,total int,err error)  {
-	tx := inits.Gorm.Model(&entity.AdministratorPermissions{})
-	err = tx.Select("id, permission_name,description, method, unique_key, url, created_at").Order("id desc").Offset((page-1)*pageSize).Limit(pageSize).Find(&list).Error
-	tx.Count(&total)
+// excludeId 排除某个id
+func  (*administratorPermissionsDao)GetPermissionByPage(excludeId int)(list []entity.AdministratorPermissions,err error)  {
+	tx := inits.Gorm.Model(&entity.AdministratorPermissions{}).Select("id, permission_name,description, method, unique_key, url, created_at,pid")
+	if  excludeId > 0 {
+		tx = tx.Where("id <> ?", excludeId)
+	}
+
+	err = tx.Order("id desc").Find(&list).Error
 	return
 }
 func (*administratorPermissionsDao)UpdatePermission(data *entity.AdministratorPermissionsData) (err error)  {

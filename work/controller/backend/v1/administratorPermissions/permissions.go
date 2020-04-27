@@ -24,14 +24,7 @@ func GetPermissions(c *gin.Context) {
 
 // 首页
 func Index(c *gin.Context) {
-	//pageTmp := c.DefaultQuery("page", "1")
-	//pageSizeTmp := c.DefaultQuery("pageSize", "20")
-	//page,_ := strconv.Atoi(pageTmp)
-	//pageSize,_ := strconv.Atoi(pageSizeTmp)
-	obj := &services.IndexPermissionService{
-		//Page: page,
-		//PageSize: pageSize,
-	}
+	obj := &services.IndexPermissionService{}
 	result := obj.Index(0)
 	c.JSON(http.StatusOK, result)
 }

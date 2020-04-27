@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"go-edu/work/dao"
 	"go-edu/work/entity"
 	"go-edu/work/httpStatus"
@@ -13,6 +12,8 @@ type CreateRolesService struct {
 	RoleName    string `form:"role_name" binding:"required,gt=2,lt=20" json:"role_name"`
 	Description string `form:"description" binding:"lt=200" json:"description"`
 }
+
+
 
 func (d *CreateRolesService) Create() (resp serializer.Response) {
 	data := &entity.AdministratorRoles{
@@ -66,7 +67,6 @@ type EditRolesService struct {
 
 func (d *EditRolesService) Edit() (resp serializer.Response) {
 	data, err := dao.AdministratorRoles.GetById(d.Id)
-	fmt.Printf("%#v\n", data)
 	if err != nil {
 		resp = serializer.Response{
 			Code:  httpStatus.GETTING_DATA_FAIL,

@@ -156,7 +156,6 @@ type EditPermissionService struct {
 
 func (d *EditPermissionService) Edit() (resp *serializer.Response) {
 	data, err := dao.AdministratorPermissionsObj.GetPermissionById(d.Id)
-	fmt.Printf("%#v\n", data)
 	if err != nil {
 		resp = &serializer.Response{
 			Code:  httpStatus.GETTING_DATA_FAIL,

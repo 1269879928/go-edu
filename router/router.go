@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-edu/work/controller"
 	"go-edu/work/controller/backend/v1/administrator"
 	"go-edu/work/controller/backend/v1/administratorPermissions"
 	"go-edu/work/controller/backend/v1/administratorRoles"
@@ -11,11 +12,7 @@ import (
 func Router() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
-	//r.POST("/ping", func(c *gin.Context) {
-	//	c.JSON(http.StatusOK, gin.H{
-	//		"message": "pong",
-	//	})
-	//})
+	r.GET("/test", controller.Test)
 	// 后端相关
 	v1 := r.Group("/backend/v1")
 	{
@@ -31,8 +28,10 @@ func Router() (r *gin.Engine)  {
 			v1.PATCH("/administrator/edit", administrator.Edit)
 			// 角色
 			v1.GET("/role", administratorRoles.Index)
+
 			v1.POST("/role", administratorRoles.Create)
 			v1.GET("/role/:id/edit", administratorRoles.Edit)
+			v1.GET("/roles", administratorRoles.GetRoles)
 			v1.PATCH("/role", administratorRoles.Update)
 			v1.PATCH("/role/status", administratorRoles.UpdateStatus)
 			// 权限

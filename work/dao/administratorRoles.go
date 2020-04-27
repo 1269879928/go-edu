@@ -34,3 +34,8 @@ func (*administratorRolesDao) DeleteById(data *entity.AdministratorRolesData)(er
 	err = inits.Gorm.Create(data).Error
 	return
 }
+// 根据status字段查询所有数据
+func (*administratorRolesDao)GetAllByStatus(status int) (res []entity.AdministratorRoles, err error)  {
+	err = inits.Gorm.Select("id, role_name,description, status, created_at").Where("status = ?", status).Find(&res).Error
+	return
+}

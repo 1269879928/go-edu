@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-edu/work/common"
-	"go-edu/work/dao"
 	"go-edu/work/httpStatus"
 	"go-edu/work/serializer"
 	"go-edu/work/services"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 // 获取权限
@@ -44,6 +42,7 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
+// 首页
 func Index(c *gin.Context) {
 	pageTmp := c.DefaultQuery("page", "1")
 	pageSizeTmp := c.DefaultQuery("pageSize", "20")
@@ -51,10 +50,11 @@ func Index(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+
 // 添加管理员
 func Create(c *gin.Context) {
 	service := &services.Administrator{}
-	if err := c.ShouldBind(service); err != nil {
+	if err := c.ShouldBindJSON(service); err != nil {
 		fmt.Printf("params err:%v\n", err)
 		c.JSON(http.StatusOK, common.ValidateResponse(err))
 		return
@@ -64,7 +64,7 @@ func Create(c *gin.Context) {
 }
 
 
-
+// 删除
 func UpdateStatus(c *gin.Context) {
 	status := &services.StatusForm{}
 	if err := c.ShouldBindJSON(status); err != nil {
@@ -76,67 +76,26 @@ func UpdateStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-type UpdateForm struct {
-	Id       int64  `form:"id" binding:"required"`
-	Name     string `form:"name" binding:"required"`
-	Password string `form:"password"`
-	Email    string `form:"email" binding:"required,email"`
-}
 
+// 更新
 func Edit(c *gin.Context) {
 	if c.Request.Method == "PATCH" {
-		var params UpdateForm
-		if err := c.ShouldBindJSON(&params); err != nil {
-			fmt.Println(err)
-			c.JSON(http.StatusOK, serializer.Response{
-				Code: httpStatus.OPERATION_WRONG,
-				Data: nil,
-				Msg:  httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
-			})
+		service := &services.UpdateForm{}
+		if err := c.ShouldBind(service); err != nil {
+			fmt.Printf("%#v\n",err)
+			c.JSON(http.StatusOK, common.ValidateResponse(err))
 			return
 		}
-		data := make(map[string]interface{})
-		data["name"] = params.Name
-		password := strings.TrimSpace(params.Password)
-		if len(password) > 0 {
-			c.JSON(http.StatusOK, serializer.Response{
-				Code: httpStatus.PARAM_WRONG,
-				Data: nil,
-				Msg:  httpStatus.GetCode2Msg(httpStatus.PARAM_WRONG),
-			})
-		}
-		err := dao.AdminstratorObj.UpdateById(params.Id, data)
-		if err != nil {
-			c.JSON(http.StatusOK, serializer.Response{
-				Code: httpStatus.PARAM_WRONG,
-				Data: nil,
-				Msg:  httpStatus.GetCode2Msg(httpStatus.PARAM_WRONG),
-			})
-			return
-		}
-		c.JSON(http.StatusOK, serializer.Response{
-			Code: httpStatus.SUCCESS_STATUS,
-			Msg:  httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
-		})
+		resp := service.Update()
+		c.JSON(http.StatusOK, resp)
 		return
 	}
 	idTmp := c.Param("id")
-	id, err := strconv.ParseInt(idTmp, 10, 64)
+	id, err := strconv.ParseUint(idTmp, 10, 64)
 	if err != nil {
 		return
 	}
-	data, err := dao.AdminstratorObj.GetAdministratorById(id)
-	if err != nil {
-		c.JSON(http.StatusOK, serializer.Response{
-			Code: httpStatus.OPERATION_WRONG,
-			Data: data,
-			Msg:  httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, serializer.Response{
-		Code: httpStatus.SUCCESS_STATUS,
-		Data: data,
-		Msg:  httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
-	})
+	service := services.AdministratorDetail{Id: id}
+	resp := service.GetAdministratorDetailById()
+	c.JSON(http.StatusOK, resp)
 }

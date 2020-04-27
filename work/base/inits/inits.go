@@ -63,9 +63,7 @@ func Migration()  {
 	Gorm.
 		Set("gorm:table_options", "ENGINE=InnoDB").
 		Set("gorm:table_options",  "charset=utf8mb4").
-		AutoMigrate(&entity.AdministratorsInfo{}, &entity.AdministratorRoles{},&entity.AdministratorRoleRelation{}, &entity.AdministratorPermissions{}, &entity.AdministratorRolePermissionRelation{})
-	//Gorm.Model(&entity.AdministratorRoleRelation{}).AddIndex("idx_administrator_role_relation_administrator_id", "administrator_id").
-	//	AddIndex("idx_administrator_role_relation_role_id", "role_id")
-	//Gorm.Model(&entity.AdministratorRolePermissionRelation{}).AddIndex("idx_administrator_role_permission_relation_permission_id", "permission_id").
-	//	AddIndex("idx_administrator_role_permission_relation_role_id", "role_id")
+		AutoMigrate(&entity.Administrators{}, &entity.AdministratorRoles{}, &entity.AdministratorPermissions{})
+		//AutoMigrate(&entity.AdministratorsInfo{}, &entity.AdministratorRoles{},&entity.AdministratorRoleRelation{}, &entity.AdministratorPermissions{}, &entity.AdministratorRolePermissionRelation{})
+
 }

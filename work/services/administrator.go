@@ -12,9 +12,10 @@ import (
 )
 
 type Administrator struct {
-	Name string `form:"name" binding:"required,gt=2,lt=10"`
-	Password string `form:"password" binding:"required,gt=5"`
-	Email string `form:"email" binding:"required,email"`
+	Name string `form:"name" binding:"required,gt=2,lt=10" json:"name"`
+	Password string `form:"password" binding:"required,gt=5" json:"password"`
+	Email string `form:"email" binding:"required,email" json:"email"`
+	RoleId []uint64 `form:"role_id" json:"role_id"`
 }
 
 type StatusForm struct {
@@ -54,7 +55,7 @@ func (admin *Administrator)Index(pageTmp, pageSizeTmp string) (res *serializer.R
 	}
 	return
 }
-func (admin *Administrator)Create() (res *serializer.Response)  {
+func (admin *Administrator)Create() (res *serializer.Response) {
 	pwd, err := common.HashPassword(admin.Password)
 	if err != nil {
 		res = &serializer.Response{
@@ -64,14 +65,22 @@ func (admin *Administrator)Create() (res *serializer.Response)  {
 		}
 		return
 	}
-	data := &entity.Administrator{
+	adminData := &entity.Administrators{
 		Name:          admin.Name,
 		Email:         admin.Email,
 		Password:      pwd,
 		LastLoginDate: time.Now(),
 		Status:        1,
 	}
-	_, err = dao.AdminstratorObj.CreateAdministrator(data)
+	fmt.Printf("id string%#v\n", admin)
+	roleIds := make([]uint64, 0)
+	if len(admin.RoleId) > 0 {
+		for _, v := range admin.RoleId {
+			//id,_ := strconv.ParseUint(v, 10, 64)
+			roleIds = append(roleIds, v)
+		}
+	}
+	err = dao.AdminstratorObj.CreateAdministratorRole(adminData, roleIds)
 	if err != nil {
 		// TODO
 		fmt.Printf("err:%#v\n", err)
@@ -91,7 +100,7 @@ func (admin *Administrator)Create() (res *serializer.Response)  {
 }
 func (s StatusForm) UpdateStatus() (res *serializer.Response) {
 	data := map[string]interface{}{"status": s.Status}
-	err := dao.AdminstratorObj.UpdateById(s.Id, data)
+	err := dao.AdminstratorObj.Update(s.Id, data)
 	if err != nil {
 		res = &serializer.Response{
 			Code:  httpStatus.OPERATION_WRONG,
@@ -104,6 +113,84 @@ func (s StatusForm) UpdateStatus() (res *serializer.Response) {
 		Code:  httpStatus.SUCCESS_STATUS,
 		Data:  nil,
 		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
+}
+type AdministratorDetail struct {
+	Id uint64
+}
+// 详情
+func (d *AdministratorDetail) GetAdministratorDetailById() (resp *serializer.Response)  {
+	data, err := dao.AdminstratorObj.GetAdministratorDetailById(&entity.Administrators{ID: d.Id})
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	roles, err := dao.AdministratorRoles.GetAllByStatus(1)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  map[string]interface{}{"roles": roles, "role":data},
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	return
+}
+// 更新
+type UpdateForm struct {
+	Id       uint64  `form:"id" binding:"required"`
+	Name     string `form:"name" binding:"required"`
+	Password string `form:"password"`
+	Email    string `form:"email" binding:"required,email"`
+	RoleId []uint64 `form:"role_id" json:"role_id"`
+}
+
+func (d *UpdateForm)Update() (resp *serializer.Response) {
+	data := dao.AdministratorUpdate{
+		Id:       d.Id,
+		Name:     d.Name,
+		RoleIds:  d.RoleId,
+	}
+	if d.Password != "" {
+		pwd, err := common.HashPassword(d.Password)
+		if err != nil {
+			resp = &serializer.Response{
+				Code:  httpStatus.OPERATION_WRONG,
+				Data:  nil,
+				Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+				Error: nil,
+			}
+			return
+		}
+		data.Password = pwd
+	}
+	if err := data.UpdateById(); err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  nil,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
 	}
 	return
 }

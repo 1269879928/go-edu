@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-edu/work/common"
+	"go-edu/work/dao"
+	"go-edu/work/httpStatus"
+	"go-edu/work/serializer"
 	"go-edu/work/services"
 	"net/http"
 	"strconv"
@@ -21,6 +24,26 @@ func Index(c *gin.Context) {
 	}
 	result := obj.Index()
 	c.JSON(http.StatusOK, result)
+}
+func GetRoles(c *gin.Context)  {
+	roles, err := dao.AdministratorRoles.GetAllByStatus(1)
+	if err != nil {
+		resp := &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	resp := &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  roles,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	c.JSON(http.StatusOK, resp)
 }
 
 // 添加角色

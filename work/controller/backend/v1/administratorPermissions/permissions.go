@@ -12,13 +12,22 @@ import (
 
 // 获取当前管理员权限
 func GetPermissions(c *gin.Context) {
-	var menus []string = []string{"Home", "system", "Administrator", "AdministratorRole", "Roles", "AdministratorPermission"}
-	c.JSON(http.StatusOK, serializer.Response{
-		Code:  0,
-		Data:  menus,
-		Msg:   "ok",
-		Error: nil,
-	})
+	//var menus []string = []string{"Home", "system", "Administrator", "AdministratorRole", "Roles", "AdministratorPermission"}
+	_id, ok := c.Get("UserId")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, serializer.Response{
+			Code:  5000,
+			Data:  nil,
+			Msg:   "Unauthorized",
+			Error: nil,
+		})
+		return
+	}
+	fmt.Println("adiminId:", _id.(uint64))
+	//id ,_ := strconv.ParseUint(, 10, 64)
+	service := &services.AdministratorHasPermissionsService{Id: 1}
+	resp := service.GetPermissionById()
+	c.JSON(http.StatusOK, resp)
 	return
 }
 
@@ -60,6 +69,7 @@ func Update(c *gin.Context) {
 	service := &services.UpdatePermissionService{}
 	if err := c.ShouldBindJSON(service);err !=nil {
 		c.JSON(http.StatusOK, common.ValidateResponse(err))
+		return
 	}
 	resp := service.Update()
 	c.JSON(http.StatusOK, resp)
@@ -72,5 +82,14 @@ func Delete(c *gin.Context)  {
 	//}
 	service := &services.DeletePermissionService{Id: id}
 	resp := service.Delete()
+	c.JSON(http.StatusOK, resp)
+}
+func SetPermission(c *gin.Context)  {
+	service := &services.PermissionsWithRoleService{}
+	if err := c.ShouldBind(service); err != nil {
+		c.JSON(http.StatusOK, common.ValidateResponse(err))
+		return
+	}
+	resp := service.GetPermissionsWithRole()
 	c.JSON(http.StatusOK, resp)
 }

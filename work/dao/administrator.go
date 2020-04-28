@@ -115,7 +115,9 @@ func (a *AdminstratorDao)GetAdministratorByEmail(email string) (info entity.Admi
 }
 // 根据id  查询管理员-角色 一对多
 func (a *AdminstratorDao)GetAdministratorDetailById(data *entity.Administrators)(result *entity.Administrators, err error)  {
-	inits.Gorm.First(data)
+	if err = inits.Gorm.Where("status = 1").First(data).Error; err != nil {
+		return
+	}
 	var roles []entity.AdministratorRoles
 	err = inits.Gorm.Model(data).Where("status = 1").Related(&roles, "Roles").Error
 	data.Roles = roles

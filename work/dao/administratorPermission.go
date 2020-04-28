@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"go-edu/work/base/inits"
 	"go-edu/work/entity"
 )
@@ -31,5 +32,37 @@ func  (*administratorPermissionsDao)GetPermissionByPage(excludeId int)(list []en
 }
 func (*administratorPermissionsDao)UpdatePermission(data *entity.AdministratorPermissionsData) (err error)  {
 	err = inits.Gorm.Save(data).Error
+	return
+}
+// 分配权限
+func (*administratorPermissionsDao)UpdatePermissionsForRole(roleId uint64, permissionIds []uint64) (err error)  {
+	tx := inits.Gorm.Begin()
+	if err = tx.Error; err != nil {
+		return
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			err = errors.New("update permission failed")
+		}
+	}()
+	if err = tx.Where("administrator_roles_id = ?", roleId).Delete(entity.AdministratorRolePermissionRelation{}).Error; err !=nil {
+		tx.Rollback()
+		return
+	}
+	if len(permissionIds) > 0 {
+		for _, pid := range permissionIds {
+			if err = tx.Create(&entity.AdministratorRolePermissionRelation{AdministratorRolesId: roleId, AdministratorPermissionsId: pid}).Error; err !=nil {
+				tx.Rollback()
+				return
+			}
+		}
+	}
+	tx.Commit()
+	return
+}
+// 获取权限
+func (*administratorPermissionsDao)GetPermissionsWithIds(permissionIds []uint64) (res []*entity.AdministratorPermissions, err error)  {
+	err = inits.Gorm.Select("id, permission_name, unique_key, method, url, pid").Where("id in (?)", permissionIds).Find(&res).Error
 	return
 }

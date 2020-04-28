@@ -11,12 +11,12 @@ import (
 )
 
 type CreatePermissionService struct {
-	PermissionName string `form:"permission_name" binding:"required,gt=2,lt=30" json:"permission_name"`
+	PermissionName string `form:"permission_name" binding:"required,gt=1,lt=30" json:"permission_name"`
 	UniqueKey      string `form:"unique_key" binding:"required,gt=2,lt=50" json:"unique_key"`
 	Method         string `form:"method" binding:"required,gt=2,lt=10" json:"method"`
-	Url            string `form:"url" binding:"required,gt=2,lt=100" json:"url"`
+	Url            string `form:"url" binding:"required" json:"url"`
 	Description    string `form:"description" binding:"lt=200" json:"description"`
-	Pid            int    `form:"pid" binding:"gt=0" json:"pid"`
+	Pid            int    `form:"pid" json:"pid"`
 }
 
 func (d *CreatePermissionService) Create() (resp *serializer.Response) {
@@ -88,6 +88,8 @@ func (d *IndexPermissionService) Index(excludeId int ) (resp *serializer.Respons
 	}
 	data := buildData(list)
 	result := buildTree(0, data)
+
+
 	resp = &serializer.Response{
 		Code: httpStatus.SUCCESS_STATUS,
 		Data: map[string]interface{}{"list": result},
@@ -124,14 +126,6 @@ func buildData(list []entity.AdministratorPermissions) map[int]map[int]entity.Ad
 			data[pid] = make(map[int]entity.AdministratorPermissions)
 		}
 		data[pid][id] = v
-		//data[pid][id].Id = id
-		//data[pid][id].Pid = pid
-		//data[pid][id].UpdatedAt = v.CreatedAt
-		//data[pid][id].CreatedAt = v.CreatedAt
-		//data[pid][id].Description = v.Description
-		//data[pid][id].Url = v.Url
-		//data[pid][id].Method = v.Method
-		//data[pid][id].PermissionName = v.PermissionName
 	}
 	return data
 }
@@ -180,7 +174,7 @@ type UpdatePermissionService struct {
 	PermissionName string `form:"permission_name" binding:"required,gt=2,lt=30" json:"permission_name"`
 	Description    string `form:"description" binding:"lt=200" json:"description"`
 	Method         string `form:"method" binding:"required,gt=2,lt=30" json:"method"`
-	Url            string `form:"url" binding:"required,gt=2,lt=200" json:"url"`
+	Url            string `form:"url" binding:"required,min=1,lt=200" json:"url"`
 	UniqueKey      string `form:"unique_key" binding:"required,gt=2,lt=50" json:"unique_key"`
 	Pid            int    `form:"pid" json:"pid"`
 }
@@ -237,3 +231,95 @@ func (d *DeletePermissionService) Delete() (resp *serializer.Response) {
 	}
 	return
 }
+type PermissionsWithRoleService struct {
+	RoleId uint64 `form:"role_id" binding:"required" json:"role_id"`
+}
+func (f *PermissionsWithRoleService)GetPermissionsWithRole() (resp *serializer.Response)  {
+	list, err := dao.AdministratorPermissionsObj.GetPermissionByPage(0)
+	if err != nil {
+		fmt.Printf("%#v\n", err)
+		resp = &serializer.Response{
+			Code: httpStatus.GETTING_DATA_FAIL,
+			Msg:  httpStatus.GetCode2Msg(httpStatus.GETTING_DATA_FAIL),
+		}
+		return
+	}
+	data := buildData(list)
+	permissionList := buildTree(0, data)
+	havePermissions, err := dao.AdministratorRolePermissionRelationObj.GetPermissionByRoleId(f.RoleId)
+	if err !=nil {
+		resp = &serializer.Response{
+			Code: httpStatus.OPERATION_WRONG,
+			Msg: httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code: httpStatus.SUCCESS_STATUS,
+		Data: map[string]interface{}{"list": permissionList, "permissions": havePermissions},
+		Msg:  httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
+}
+// 获取管理员对应的权限
+type AdministratorHasPermissionsService struct {
+	Id uint64 // 管理员id
+}
+func (f *AdministratorHasPermissionsService)GetPermissionById() (resp *serializer.Response) {
+	// 获取 当前登录用户扮演的角色id
+	admin, err := dao.AdminstratorObj.GetAdministratorDetailById(&entity.Administrators{ID: f.Id})
+	if err != nil {
+		resp = &serializer.Response{
+			Code: httpStatus.OPERATION_WRONG,
+			Msg: httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+		}
+		return
+	}
+	roleIds := make([]uint64, 0)
+	if len(admin.Roles) > 0 {
+		for _, v := range admin.Roles {
+			roleIds = append(roleIds, v.ID)
+		}
+	}
+	fmt.Println("roles",roleIds)
+	// 获取权限id
+	rolesPermissions, err := dao.AdministratorRolePermissionRelationObj.GetPermissionByRoleIds(roleIds)
+	if err != nil {
+		resp = &serializer.Response{
+			Code: httpStatus.OPERATION_WRONG,
+			Msg: httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+		}
+		return
+	}
+	permissionIds := make([]uint64, 0)
+	if len(rolesPermissions) == 0 {
+		return
+	}
+	for _, v := range rolesPermissions {
+		permissionIds = append(permissionIds, v.AdministratorPermissionsId)
+	}
+	//
+	permissionsInfo, err := dao.AdministratorPermissionsObj.GetPermissionsWithIds(permissionIds)
+	if err != nil {
+		resp = &serializer.Response{
+			Code: httpStatus.OPERATION_WRONG,
+			Msg: httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+		}
+		return
+	}
+	permissions := make([]string, 0)
+	if len(permissionsInfo) == 0 {
+		return
+	}
+	for _, v := range permissionsInfo {
+		permissions = append(permissions, v.UniqueKey)
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  permissions,
+		Msg:   "OK",
+		Error: nil,
+	}
+	return
+}
+

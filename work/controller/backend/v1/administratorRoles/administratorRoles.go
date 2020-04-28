@@ -84,7 +84,18 @@ func Update(c *gin.Context) {
 	service := &services.UpdateRolesService{}
 	if err := c.ShouldBindJSON(service);err !=nil {
 		c.JSON(http.StatusOK, common.ValidateResponse(err))
+		return
 	}
 	resp := service.Update()
+	c.JSON(http.StatusOK, resp)
+}
+// 分配权限
+func UpdatePermissions(c *gin.Context)  {
+	service := &services.RolePermissionsService{}
+	if err := c.ShouldBindJSON(service); err != nil {
+		c.JSON(http.StatusOK, common.ValidateResponse(err))
+		return
+	}
+	resp := service.UpdatePermissionsForRole()
 	c.JSON(http.StatusOK, resp)
 }

@@ -17,8 +17,8 @@ func Router() (r *gin.Engine)  {
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
-		authorized := r.Group("/")
-		authorized.Use(middlewares.AuthRequired())
+		//v1 := r.Group("/")
+		v1.Use(middlewares.AuthRequired())
 		{
 			// 管理员
 			v1.GET("/administrator", administrator.Index)
@@ -28,12 +28,13 @@ func Router() (r *gin.Engine)  {
 			v1.PATCH("/administrator/edit", administrator.Edit)
 			// 角色
 			v1.GET("/role", administratorRoles.Index)
-
 			v1.POST("/role", administratorRoles.Create)
 			v1.GET("/role/:id/edit", administratorRoles.Edit)
 			v1.GET("/roles", administratorRoles.GetRoles)
 			v1.PATCH("/role", administratorRoles.Update)
 			v1.PATCH("/role/status", administratorRoles.UpdateStatus)
+			// 分配权限
+			v1.PATCH("/role/update-permissions", administratorRoles.UpdatePermissions)
 			// 权限
 			v1.GET("/permissions", administratorPermissions.GetPermissions)
 			v1.GET("/permission", administratorPermissions.Index)
@@ -42,6 +43,7 @@ func Router() (r *gin.Engine)  {
 			v1.GET("/permission/:id/edit", administratorPermissions.Edit)
 			v1.PATCH("/permission", administratorPermissions.Update)
 			v1.DELETE("/permission/:id", administratorPermissions.Delete)
+			v1.GET("/set-permission", administratorPermissions.SetPermission)
 
 		}
 	}

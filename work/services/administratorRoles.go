@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"go-edu/work/dao"
 	"go-edu/work/entity"
 	"go-edu/work/httpStatus"
@@ -135,6 +136,28 @@ func (d *StatusRolesService)UpdateStatus()(resp serializer.Response)  {
 	resp = serializer.Response{
 		Code: httpStatus.SUCCESS_STATUS,
 		Msg:  httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
+}
+// 分配权限
+type RolePermissionsService struct {
+	RoleId uint64 `form:"role_id" binding:"required" json:"role_id"`
+	PermissionIds []uint64 `form:"permission_ids" json:"permission_ids"`
+}
+func (f *RolePermissionsService) UpdatePermissionsForRole()(resp *serializer.Response)  {
+
+	fmt.Printf("%#v\n", f)
+	//return
+	if err :=dao.AdministratorPermissionsObj.UpdatePermissionsForRole(f.RoleId, f.PermissionIds); err !=nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+		}
+		return 
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
 	}
 	return
 }

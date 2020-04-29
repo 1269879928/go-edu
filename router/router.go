@@ -2,17 +2,16 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-edu/work/controller"
 	"go-edu/work/controller/backend/v1/administrator"
 	"go-edu/work/controller/backend/v1/administratorPermissions"
 	"go-edu/work/controller/backend/v1/administratorRoles"
+	"go-edu/work/controller/backend/v1/courseCategoryies"
 	"go-edu/work/middlewares"
 )
 
 func Router() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
-	r.GET("/test", controller.Test)
 	// 后端相关
 	v1 := r.Group("/backend/v1")
 	{
@@ -44,6 +43,8 @@ func Router() (r *gin.Engine)  {
 			v1.PATCH("/permission", administratorPermissions.Update)
 			v1.DELETE("/permission/:id", administratorPermissions.Delete)
 			v1.GET("/set-permission", administratorPermissions.SetPermission)
+			// 课程分类
+			v1.POST("/course-categories", courseCategoryies.Create)
 
 		}
 	}

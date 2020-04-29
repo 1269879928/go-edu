@@ -25,7 +25,7 @@ func GetPermissions(c *gin.Context) {
 	}
 	fmt.Println("adiminId:", _id.(uint64))
 	//id ,_ := strconv.ParseUint(, 10, 64)
-	service := &services.AdministratorHasPermissionsService{Id: 1}
+	service := &services.AdministratorHasPermissionsService{Id: _id.(uint64)}
 	resp := service.GetPermissionById()
 	c.JSON(http.StatusOK, resp)
 	return

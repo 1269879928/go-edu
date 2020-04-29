@@ -12,7 +12,6 @@ func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if len(token) < 20 {
-			fmt.Println("1")
 			c.Abort()
 			c.JSON(http.StatusUnauthorized, serializer.Response{
 				Code: 401,
@@ -22,7 +21,6 @@ func AuthRequired() gin.HandlerFunc {
 		}
 		result, err := common.VerifyJWT(token)
 		if err != nil {
-			fmt.Println("2")
 			c.Abort()
 			c.JSON(http.StatusUnauthorized, serializer.Response{
 				Code: http.StatusUnauthorized,
@@ -32,7 +30,6 @@ func AuthRequired() gin.HandlerFunc {
 		}
 		remoteAddr := c.ClientIP()
 		if result.Ip != remoteAddr {
-			fmt.Println("3")
 			c.Abort()
 			c.JSON(http.StatusUnauthorized, serializer.Response{
 				Code: 401,
@@ -41,8 +38,9 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 		c.Set("Email", result.Email)
-		fmt.Println("currentId:", result.UserId)
 		c.Set("UserId", result.UserId)
+		fmt.Println("currentUserId:", result.UserId)
+		// TODO 权限验证
 		//c.Set("Token", result.Token)
 		c.Next()
 		//refreshJwt(c)

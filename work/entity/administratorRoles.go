@@ -28,15 +28,3 @@ type AdministratorRolesData struct {
 func (AdministratorRolesData) TableName() string {
 	return "administrator_roles"
 }
-
-// 事务测试
-type Test1 struct {
-	Id int64 `gorm:"primary_key"`
-	T1Name    string
-	T1Age int
-}
-type Test2 struct {
-	Id int64 `gorm:"primary_key"`
-	T2Name    string
-	T1Id int64
-}

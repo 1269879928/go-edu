@@ -63,7 +63,8 @@ func Migration()  {
 	Gorm.
 		Set("gorm:table_options", "ENGINE=InnoDB").
 		Set("gorm:table_options",  "charset=utf8mb4").
-		AutoMigrate(&entity.Administrators{}, &entity.AdministratorRoles{}, &entity.AdministratorPermissions{})
+		AutoMigrate(&entity.Administrators{}, &entity.AdministratorRoles{}, &entity.AdministratorPermissions{}, &entity.Course{},
+			&entity.CourseCategories{},&entity.CourseChapter{},&entity.Videos{})
 		//AutoMigrate(&entity.AdministratorsInfo{}, &entity.AdministratorRoles{},&entity.AdministratorRoleRelation{}, &entity.AdministratorPermissions{}, &entity.AdministratorRolePermissionRelation{})
 
 }

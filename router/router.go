@@ -45,6 +45,10 @@ func Router() (r *gin.Engine)  {
 			v1.GET("/set-permission", administratorPermissions.SetPermission)
 			// 课程分类
 			v1.POST("/course-categories", courseCategoryies.Create)
+			v1.GET("/course-categories", courseCategoryies.Index)
+			v1.GET("/course-categories/:id/edit", courseCategoryies.Edit)
+			v1.PATCH("/course-categories", courseCategoryies.Update)
+			v1.DELETE("/course-categories", courseCategoryies.Delete)
 
 		}
 	}

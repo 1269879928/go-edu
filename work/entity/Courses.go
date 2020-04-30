@@ -3,9 +3,10 @@ package entity
 import "time"
 
 // 课程
-type Course struct {
+type Courses struct {
 	Id uint64 `gorm:"primary_key" json:"id"`
 	Title string `gorm:"type:varchar(200);not null;default:'';comment:'课程标题'" json:"title"`
+	Price string `gorm:"type:decimal(8,2);not null;default:'0.00';comment:'收费'" json:"price"`
 	Description string `gorm:"type:text;comment:'描述'" json:"description"`
 	SeoDescription string `gorm:"type:varchar(255);not null;default:'';comment:'seo描述'" json:"seo_description"`
 	Thumb string `gorm:"type:varchar(200);not null;default:'';comment:'封面图片'" json:"thumb"`

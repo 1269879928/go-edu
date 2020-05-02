@@ -8,6 +8,15 @@ import (
 	"net/http"
 )
 
+// @Summary 后台登录接口
+// @Tags 登录
+// @version 1.0
+// @Accept json
+// @Param email path string true "email"
+// @Param password path string true "password"
+// @Success 200 {object} serializer.Response 成功后返回值
+// @Failure 500 {object} serializer.Response 失败返回值
+// @Router /administrator/login [post]
 func Login(c *gin.Context)  {
 	//var menus []string = []string{"Home", "Icons", "tablelist", "TableBasic", "TableSearch"}
 

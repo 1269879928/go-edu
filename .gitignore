@@ -1,4 +1,6 @@
 conf/config.json
 .idea
+.vscode
 *.exe
 vendor
+Dockerfile

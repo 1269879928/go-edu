@@ -49,4 +49,135 @@ paths:
       summary: 后台登录接口
       tags:
       - 登录
+  /course-categories:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: status
+        in: path
+        name: status
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 删除课程分类
+      tags:
+      - 课程分类
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: page
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: pageSize
+        in: path
+        name: pageSize
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 获取课程分类列表
+      tags:
+      - 课程分类
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: sort
+        in: path
+        name: sort
+        required: true
+        type: integer
+      - description: status
+        in: path
+        name: status
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 更新课程分类
+      tags:
+      - 课程分类
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: sort
+        in: path
+        name: sort
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 创建分类
+      tags:
+      - 课程分类
+  /course-categories/{id}/edit:
+    get:
+      consumes:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/serializer.Response'
+      summary: 获取课程分类信息
+      tags:
+      - 课程分类
 swagger: "2.0"

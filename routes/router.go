@@ -1,21 +1,42 @@
 package routes
 
 import (
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"go-edu/libs/aliVod"
 	"go-edu/work/controller/backend/v1/administrator"
 	"go-edu/work/controller/backend/v1/administratorPermissions"
 	"go-edu/work/controller/backend/v1/administratorRoles"
 	"go-edu/work/controller/backend/v1/courseCategoryies"
 	"go-edu/work/middlewares"
+	"net/http"
 )
 
-func Router() (r *gin.Engine)  {
+func Routes() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
 
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
+		v1.GET("/video/auth", func(context *gin.Context) {
+			vodClient, err := aliVod.InitVodClient()
+			if err != nil {
+				fmt.Println("init vodclient failed , err:", err)
+				return
+			}
+			id := "1ab11273da8a4921b021e52b899b87b0"
+			res , err := aliVod.MyGetPlayAuth(vodClient, id)
+			if err != nil {
+				fmt.Println("get player auth failed , err:", err)
+				return
+			}
+			context.JSON(http.StatusOK, res)
+		})
 		//v1 := r.Group("/")
 		v1.Use(middlewares.AuthRequired())
 		{
@@ -51,6 +72,45 @@ func Router() (r *gin.Engine)  {
 			v1.DELETE("/course-categories", courseCategoryies.Delete)
 
 		}
+		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")
+		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+		r.POST("/video", func(context *gin.Context) {
+			var localFile string = "D:\\bg\\5588.flv"
+			// 初始化vod
+			vodClient, err := aliVod.InitVodClient()
+			if err != nil {
+				fmt.Println("init vodclient failed , err:", err)
+				return
+			}
+			// 获取上传凭证
+			upload := &aliVod.CreateUploadVideo{
+				Client:      vodClient,
+				Title:       "毛片",
+				Description: "小姐姐很正，我很喜欢",
+				CoverURL:    "http://img03.sogoucdn.com/app/a/100520021/8de3c081b9c92c249460c305a934b1f2",
+				Tags:        "行为艺术",
+			}
+			response, err := upload.MyCreateUploadVideo()
+			if err != nil {
+				fmt.Println("UploadVideo failed , err:", err)
+				return
+			}
+			// 执行成功会返回VideoId、UploadAddress和UploadAuth
+			var videoId = response.VideoId
+			var uploadAuthDTO aliVod.UploadAuthDTO
+			var uploadAddressDTO aliVod.UploadAddressDTO
+			var uploadAuthDecode, _ = base64.StdEncoding.DecodeString(response.UploadAuth)
+			var uploadAddressDecode, _ = base64.StdEncoding.DecodeString(response.UploadAddress)
+			_ = json.Unmarshal(uploadAuthDecode, &uploadAuthDTO)
+			_= json.Unmarshal(uploadAddressDecode, &uploadAddressDTO)
+			// 使用UploadAuth和UploadAddress初始化OSS客户端
+			var ossClient, _ = aliVod.InitOssClient(uploadAuthDTO, uploadAddressDTO)
+			// 上传文件，注意是同步上传会阻塞等待，耗时与文件大小和网络上行带宽有关
+			aliVod.UploadLocalFile(ossClient, uploadAddressDTO, localFile)
+			//MultipartUploadFile(ossClient, uploadAddressDTO, localFile)
+			fmt.Println("Succeed, VideoId:", videoId)
+		})
+
 	}
 	return
 }

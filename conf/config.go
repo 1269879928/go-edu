@@ -16,9 +16,14 @@ type Jwt struct {
 	Key string `json:"key"`
 	Expires int64 `json:"expires"`
 }
-
+type Oss struct {
+	AccessKeyId string `json:"access_key_id"`
+	AccessKeySecret string `json:"access_key_secret"`
+	RegionId string `json:"region_id"`
+}
 type Config struct {
 	Mysql Mysql `json:"mysql"`
 	Redis Redis `json:"redis"`
 	Jwt Jwt `json:"jwt"`
+	Oss Oss `json:"oss"`
 }

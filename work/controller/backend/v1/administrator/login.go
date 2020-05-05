@@ -18,8 +18,6 @@ import (
 // @Failure 500 {object} serializer.Response 失败返回值
 // @Router /administrator/login [post]
 func Login(c *gin.Context)  {
-	//var menus []string = []string{"Home", "Icons", "tablelist", "TableBasic", "TableSearch"}
-
 	login := &services.LoginForm{
 		RemoteAddr: c.ClientIP(),
 	}

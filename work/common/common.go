@@ -5,14 +5,27 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"go-edu/work/base/inits"
 	"golang.org/x/crypto/bcrypt"
+	"math/rand"
 	"time"
 )
+
 
 //func GenPassword(pwd string) string  {
 //	salt := "ljie,er9:09+_LJl"
 //	tmpPwd := md5.Sum([]byte(fmt.Sprintf("%s%s", pwd,salt)))
 //	return fmt.Sprintf("%x", tmpPwd)
 //}
+func RandomString(length int) string  {
+	seedStr := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	str := ""
+	byteStr := []byte(seedStr)
+	lenStr := len(seedStr)
+	rand.Seed(time.Now().UnixNano())
+	for i:= length; i>0; i-- {
+		str += string(byteStr[rand.Intn(lenStr)])
+	}
+	return str
+}
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	return string(bytes), err

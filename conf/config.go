@@ -21,6 +21,7 @@ type Oss struct {
 	AccessKeySecret string `json:"access_key_secret"`
 	RegionId string `json:"region_id"`
 }
+// easyjson:json
 type Config struct {
 	Mysql Mysql `json:"mysql"`
 	Redis Redis `json:"redis"`

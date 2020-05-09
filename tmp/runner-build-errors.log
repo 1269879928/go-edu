@@ -1,0 +1,2 @@
+# go-edu/work/common
+work\common\upload.go:7:2: imported and not used: "math/rand"

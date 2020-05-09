@@ -1,7 +1,6 @@
 package inits
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -17,11 +16,12 @@ var Config *conf.Config
 const ConfigPath = "conf/config.json"
 
 func Init()  {
-	InitMysql()
-	InitConfig()
+	initMysql()
+	initConfig()
+	easyjsonTest()
 }
 
-func InitMysql()  {
+func initMysql()  {
 	mysqlDsn := os.Getenv("MysqlDSN")
 	//fmt.Println("mysql dsn:", mysqlDsn)
 	db, err := gorm.Open("mysql", mysqlDsn)
@@ -40,7 +40,30 @@ func InitMysql()  {
 	//migration.Migration()
 }
 
-func InitConfig()  {
+func initConfig()  {
+	configFile, err := os.Open(ConfigPath)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+		return
+	}
+	defer configFile.Close()
+	//reader := bufio.NewReader(configFile)
+	configByte, err := ioutil.ReadAll(configFile)
+	if err != nil {
+		panic(err.Error())
+		return
+	}
+	config := &conf.Config{}
+	err = config.UnmarshalJSON(configByte)
+	//err = json.Unmarshal(configByte, &Config)
+	if err !=nil {
+		panic(err.Error())
+	}
+	Config = config
+	fmt.Printf("abc:%#v\n", Config)
+}
+
+func easyjsonTest()  {
 	configFile, err := os.Open(ConfigPath)
 	if err != nil {
 		fmt.Println("err:", err.Error())
@@ -53,11 +76,13 @@ func InitConfig()  {
 		panic(err.Error())
 		return
 	}
-	//var config conf.Config
-	err = json.Unmarshal(b, &Config)
-	if err !=nil {
-		panic(err.Error())
+	s := &conf.Config{}
+	err = s.UnmarshalJSON(b)
+	if err != nil {
+		fmt.Println("err2:", err.Error())
+		return
 	}
+
 }
 func Migration()  {
 	Gorm.

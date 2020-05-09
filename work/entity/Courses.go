@@ -8,6 +8,7 @@ type Courses struct {
 	Title string `gorm:"type:varchar(200);not null;default:'';comment:'课程标题'" json:"title"`
 	Price string `gorm:"type:decimal(8,2);not null;default:'0.00';comment:'收费'" json:"price"`
 	Description string `gorm:"type:text;comment:'描述'" json:"description"`
+	SeoKeywords string `gorm:"type:varchar(255);not null;default:'';comment:'seo关键词(多个以,分开)'" json:"seo_keywords"`
 	SeoDescription string `gorm:"type:varchar(255);not null;default:'';comment:'seo描述'" json:"seo_description"`
 	Thumb string `gorm:"type:varchar(200);not null;default:'';comment:'封面图片'" json:"thumb"`
 	Status uint64 `gorm:"type:tinyint(1);not null;default:1;comment:'状态(0隐藏，1显示)'" json:"status"`

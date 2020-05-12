@@ -12,6 +12,7 @@ import (
 	"go-edu/work/controller/backend/v1/administratorPermissions"
 	"go-edu/work/controller/backend/v1/administratorRoles"
 	"go-edu/work/controller/backend/v1/courseCategoryies"
+	"go-edu/work/controller/common"
 	"go-edu/work/middlewares"
 	"net/http"
 )
@@ -19,7 +20,7 @@ import (
 func Routes() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
-
+	r.Static("/upload", "upload")
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
@@ -70,6 +71,9 @@ func Routes() (r *gin.Engine)  {
 			v1.GET("/course-categories/:id/edit", courseCategoryies.Edit)
 			v1.PATCH("/course-categories", courseCategoryies.Update)
 			v1.DELETE("/course-categories", courseCategoryies.Delete)
+
+			// 封面上传
+			v1.POST("/upload/image", common.UploadImage)
 
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")

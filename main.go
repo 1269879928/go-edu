@@ -16,4 +16,8 @@ func main() {
 	inits.Init()
 	r := routes.Routes()
 	r.Run(":3000")
+	//localFile := "C:\\Users\\shjting\\Desktop\\9999.jpg"
+	//saveName := "aaaaaa.jpg"
+	//ts := upload.NewQiniuUpload(localFile, saveName, inits.Config.Qiniu.AccessKey, inits.Config.Qiniu.SecretKey, inits.Config.Qiniu.Bucket)
+	//ts.Upload()
 }

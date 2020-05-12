@@ -60,7 +60,6 @@ func initConfig()  {
 		panic(err.Error())
 	}
 	Config = config
-	fmt.Printf("abc:%#v\n", Config)
 }
 
 func easyjsonTest()  {

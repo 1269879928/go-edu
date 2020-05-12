@@ -21,10 +21,16 @@ type Oss struct {
 	AccessKeySecret string `json:"access_key_secret"`
 	RegionId string `json:"region_id"`
 }
+type Qiniu struct {
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
+	Bucket string `json:"bucket"`
+}
 // easyjson:json
 type Config struct {
 	Mysql Mysql `json:"mysql"`
 	Redis Redis `json:"redis"`
 	Jwt Jwt `json:"jwt"`
 	Oss Oss `json:"oss"`
+	Qiniu Qiniu `json:"qiniu"`
 }

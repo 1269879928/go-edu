@@ -97,7 +97,87 @@ func (v *Redis) UnmarshalJSON(data []byte) error {
 func (v *Redis) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson6615c02eDecodeGoEduConf(l, v)
 }
-func easyjson6615c02eDecodeGoEduConf1(in *jlexer.Lexer, out *Oss) {
+func easyjson6615c02eDecodeGoEduConf1(in *jlexer.Lexer, out *Qiniu) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "access_key":
+			out.AccessKey = string(in.String())
+		case "secret_key":
+			out.SecretKey = string(in.String())
+		case "bucket":
+			out.Bucket = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6615c02eEncodeGoEduConf1(out *jwriter.Writer, in Qiniu) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"access_key\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.AccessKey))
+	}
+	{
+		const prefix string = ",\"secret_key\":"
+		out.RawString(prefix)
+		out.String(string(in.SecretKey))
+	}
+	{
+		const prefix string = ",\"bucket\":"
+		out.RawString(prefix)
+		out.String(string(in.Bucket))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v Qiniu) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6615c02eEncodeGoEduConf1(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v Qiniu) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6615c02eEncodeGoEduConf1(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *Qiniu) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6615c02eDecodeGoEduConf1(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *Qiniu) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6615c02eDecodeGoEduConf1(l, v)
+}
+func easyjson6615c02eDecodeGoEduConf2(in *jlexer.Lexer, out *Oss) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -132,7 +212,7 @@ func easyjson6615c02eDecodeGoEduConf1(in *jlexer.Lexer, out *Oss) {
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGoEduConf1(out *jwriter.Writer, in Oss) {
+func easyjson6615c02eEncodeGoEduConf2(out *jwriter.Writer, in Oss) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -157,27 +237,27 @@ func easyjson6615c02eEncodeGoEduConf1(out *jwriter.Writer, in Oss) {
 // MarshalJSON supports json.Marshaler interface
 func (v Oss) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6615c02eEncodeGoEduConf1(&w, v)
+	easyjson6615c02eEncodeGoEduConf2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Oss) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6615c02eEncodeGoEduConf1(w, v)
+	easyjson6615c02eEncodeGoEduConf2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Oss) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6615c02eDecodeGoEduConf1(&r, v)
+	easyjson6615c02eDecodeGoEduConf2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Oss) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6615c02eDecodeGoEduConf1(l, v)
+	easyjson6615c02eDecodeGoEduConf2(l, v)
 }
-func easyjson6615c02eDecodeGoEduConf2(in *jlexer.Lexer, out *Mysql) {
+func easyjson6615c02eDecodeGoEduConf3(in *jlexer.Lexer, out *Mysql) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -216,7 +296,7 @@ func easyjson6615c02eDecodeGoEduConf2(in *jlexer.Lexer, out *Mysql) {
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGoEduConf2(out *jwriter.Writer, in Mysql) {
+func easyjson6615c02eEncodeGoEduConf3(out *jwriter.Writer, in Mysql) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -251,27 +331,27 @@ func easyjson6615c02eEncodeGoEduConf2(out *jwriter.Writer, in Mysql) {
 // MarshalJSON supports json.Marshaler interface
 func (v Mysql) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6615c02eEncodeGoEduConf2(&w, v)
+	easyjson6615c02eEncodeGoEduConf3(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Mysql) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6615c02eEncodeGoEduConf2(w, v)
+	easyjson6615c02eEncodeGoEduConf3(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Mysql) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6615c02eDecodeGoEduConf2(&r, v)
+	easyjson6615c02eDecodeGoEduConf3(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Mysql) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6615c02eDecodeGoEduConf2(l, v)
+	easyjson6615c02eDecodeGoEduConf3(l, v)
 }
-func easyjson6615c02eDecodeGoEduConf3(in *jlexer.Lexer, out *Jwt) {
+func easyjson6615c02eDecodeGoEduConf4(in *jlexer.Lexer, out *Jwt) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -304,7 +384,7 @@ func easyjson6615c02eDecodeGoEduConf3(in *jlexer.Lexer, out *Jwt) {
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGoEduConf3(out *jwriter.Writer, in Jwt) {
+func easyjson6615c02eEncodeGoEduConf4(out *jwriter.Writer, in Jwt) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -324,27 +404,27 @@ func easyjson6615c02eEncodeGoEduConf3(out *jwriter.Writer, in Jwt) {
 // MarshalJSON supports json.Marshaler interface
 func (v Jwt) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6615c02eEncodeGoEduConf3(&w, v)
+	easyjson6615c02eEncodeGoEduConf4(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Jwt) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6615c02eEncodeGoEduConf3(w, v)
+	easyjson6615c02eEncodeGoEduConf4(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Jwt) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6615c02eDecodeGoEduConf3(&r, v)
+	easyjson6615c02eDecodeGoEduConf4(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Jwt) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6615c02eDecodeGoEduConf3(l, v)
+	easyjson6615c02eDecodeGoEduConf4(l, v)
 }
-func easyjson6615c02eDecodeGoEduConf4(in *jlexer.Lexer, out *Config) {
+func easyjson6615c02eDecodeGoEduConf5(in *jlexer.Lexer, out *Config) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -371,6 +451,8 @@ func easyjson6615c02eDecodeGoEduConf4(in *jlexer.Lexer, out *Config) {
 			(out.Jwt).UnmarshalEasyJSON(in)
 		case "oss":
 			(out.Oss).UnmarshalEasyJSON(in)
+		case "qiniu":
+			(out.Qiniu).UnmarshalEasyJSON(in)
 		default:
 			in.SkipRecursive()
 		}
@@ -381,7 +463,7 @@ func easyjson6615c02eDecodeGoEduConf4(in *jlexer.Lexer, out *Config) {
 		in.Consumed()
 	}
 }
-func easyjson6615c02eEncodeGoEduConf4(out *jwriter.Writer, in Config) {
+func easyjson6615c02eEncodeGoEduConf5(out *jwriter.Writer, in Config) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -405,29 +487,34 @@ func easyjson6615c02eEncodeGoEduConf4(out *jwriter.Writer, in Config) {
 		out.RawString(prefix)
 		(in.Oss).MarshalEasyJSON(out)
 	}
+	{
+		const prefix string = ",\"qiniu\":"
+		out.RawString(prefix)
+		(in.Qiniu).MarshalEasyJSON(out)
+	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
 func (v Config) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6615c02eEncodeGoEduConf4(&w, v)
+	easyjson6615c02eEncodeGoEduConf5(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Config) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6615c02eEncodeGoEduConf4(w, v)
+	easyjson6615c02eEncodeGoEduConf5(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Config) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6615c02eDecodeGoEduConf4(&r, v)
+	easyjson6615c02eDecodeGoEduConf5(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Config) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6615c02eDecodeGoEduConf4(l, v)
+	easyjson6615c02eDecodeGoEduConf5(l, v)
 }

@@ -27,6 +27,7 @@ require (
 	github.com/pili-engineering/pili-sdk-go.v2 v0.0.0-20190923072324-f424329f4f73 // indirect
 	github.com/pilu/config v0.0.0-20131214182432-3eb99e6c0b9a // indirect
 	github.com/pilu/fresh v0.0.0-20190826141211-0fa698148017 // indirect
+	github.com/qiniu/api.v7/v7 v7.5.0
 	github.com/qiniu/x v1.10.2 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
@@ -35,7 +36,7 @@ require (
 	github.com/urfave/cli v1.22.4 // indirect
 	github.com/yuin/goldmark v1.1.30 // indirect
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
-	golang.org/x/net v0.0.0-20200505041828-1ed23360d12c // indirect
+	golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a // indirect
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect

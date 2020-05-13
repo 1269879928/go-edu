@@ -25,6 +25,7 @@ type Qiniu struct {
 	AccessKey string `json:"access_key"`
 	SecretKey string `json:"secret_key"`
 	Bucket string `json:"bucket"`
+	Domain string `json:"domain"`
 }
 // easyjson:json
 type Config struct {

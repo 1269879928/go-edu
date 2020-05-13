@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-edu/work/common"
 	"go-edu/work/libs/upload"
 	"go-edu/work/serializer"
 	"net/http"
@@ -11,8 +12,9 @@ func UploadImage(c *gin.Context)  {
 	uploader := upload.UploadFile{
 		Context:   c,
 		File:      "file",
-		BasePath:  "tinymce/",
+		BasePath:  "course/",
 		AcceptExt: []string{"jpg", "png"},
+		StoreType: common.QINIU_STORE,
 	}
 	path, err := uploader.Upload()
 	if err != nil {

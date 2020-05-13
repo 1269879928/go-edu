@@ -12,6 +12,7 @@ import (
 	"go-edu/work/controller/backend/v1/administratorPermissions"
 	"go-edu/work/controller/backend/v1/administratorRoles"
 	"go-edu/work/controller/backend/v1/courseCategoryies"
+	"go-edu/work/controller/backend/v1/courses"
 	"go-edu/work/controller/common"
 	"go-edu/work/middlewares"
 	"net/http"
@@ -68,12 +69,19 @@ func Routes() (r *gin.Engine)  {
 			// 课程分类
 			v1.POST("/course-categories", courseCategoryies.Create)
 			v1.GET("/course-categories", courseCategoryies.Index)
+
 			v1.GET("/course-categories/:id/edit", courseCategoryies.Edit)
+			v1.GET("/course-categories-all", courseCategoryies.GetAll)
 			v1.PATCH("/course-categories", courseCategoryies.Update)
 			v1.DELETE("/course-categories", courseCategoryies.Delete)
 
 			// 封面上传
 			v1.POST("/upload/image", common.UploadImage)
+			// 富文本图片上传
+			v1.POST("/upload/editor", common.EditorUpload)
+			// 课程
+			v1.POST("/courses", courses.Create)
+			v1.GET("/courses", courses.Index)
 
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")

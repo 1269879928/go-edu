@@ -42,7 +42,7 @@ type IndexCourseCategoriesService struct {
 }
 
 func (f *IndexCourseCategoriesService)Index() (resp *serializer.Response) {
-	data,count, err := dao.CreateCourseCategoriesObj.GetAll(f.Page, f.PageSize)
+	data,count, err := dao.CreateCourseCategoriesObj.GetByPaginate(f.Page, f.PageSize)
 	if err != nil {
 		resp = &serializer.Response{
 			Code:  httpStatus.OPERATION_WRONG,
@@ -121,6 +121,27 @@ type DeleteCourseCategoriesService struct {
 func (f *DeleteCourseCategoriesService)Delete() (resp *serializer.Response) {
 	data := map[string]interface{} {"status": f.Status}
 	if err := dao.CreateCourseCategoriesObj.Update(f.Id, data);err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  data,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	return
+}
+
+type GetAllCourseCategoriesService struct{}
+func (f *GetAllCourseCategoriesService)GetAllCategories() (resp *serializer.Response) {
+	data, err := dao.CreateCourseCategoriesObj.GetAll()
+	if err != nil {
 		resp = &serializer.Response{
 			Code:  httpStatus.OPERATION_WRONG,
 			Data:  nil,

@@ -122,6 +122,8 @@ func easyjson6615c02eDecodeGoEduConf1(in *jlexer.Lexer, out *Qiniu) {
 			out.SecretKey = string(in.String())
 		case "bucket":
 			out.Bucket = string(in.String())
+		case "domain":
+			out.Domain = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -150,6 +152,11 @@ func easyjson6615c02eEncodeGoEduConf1(out *jwriter.Writer, in Qiniu) {
 		const prefix string = ",\"bucket\":"
 		out.RawString(prefix)
 		out.String(string(in.Bucket))
+	}
+	{
+		const prefix string = ",\"domain\":"
+		out.RawString(prefix)
+		out.String(string(in.Domain))
 	}
 	out.RawByte('}')
 }

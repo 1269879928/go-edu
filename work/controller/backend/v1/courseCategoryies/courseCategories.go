@@ -32,7 +32,7 @@ func Create(c *gin.Context)  {
 }
 
 // @Tags 课程分类
-// @Summary 获取课程分类列表
+// @Summary 获取课程分类列表(分页)
 // @version 1.0
 // @Accept json
 // @Param page path string true "page"
@@ -104,7 +104,18 @@ func Delete(c *gin.Context)  {
 		common.ValidateResponse(err)
 		return
 	}
-	fmt.Printf("%#v\n", service)
 	resp := service.Delete()
+	c.JSON(http.StatusOK, resp)
+}
+// @Tags 课程分类
+// @Summary 获取所有课程分类
+// @version 1.0
+// @Accept json
+// @Success 200 {object} serializer.Response 成功后返回值
+// @Failure 500 {object} serializer.Response 失败返回值
+// @Router /course-categories-all [GET]
+func GetAll(c *gin.Context)  {
+	service := &services.GetAllCourseCategoriesService{}
+	resp := service.GetAllCategories()
 	c.JSON(http.StatusOK, resp)
 }

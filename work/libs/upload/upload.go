@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go-edu/work/base/inits"
 	"go-edu/work/common"
 	"os"
 	"path"
@@ -16,12 +17,12 @@ type UploadFile struct {
 	File      string // form file name
 	BasePath string // upload/tinymce ->tinymce
 	AcceptExt []string // 接受上传的文件后缀 ["jpg", "png", "gif"]
+	StoreType int // 存储类型（1:本地，2：七牛云，3阿里云）
 }
 
-const BasePath = "upload/"
+
 func (ts *UploadFile)Upload() (savePath string, err error) {
 	file, err := ts.Context.FormFile(ts.File)
-	file.Open()
 	if err != nil {
 		return
 	}
@@ -36,18 +37,39 @@ func (ts *UploadFile)Upload() (savePath string, err error) {
 		err = errors.New("unsupported file type ." + fileExt)
 		return
 	}
-	fileName := fmt.Sprintf("%s%s.%s", time.Now().Format("20060102"), common.RandomString(8),fileExt)
-	err = os.MkdirAll(ts.BasePath, 0755)
+	fileName := fmt.Sprintf("%s%s%s.%s", ts.BasePath, time.Now().Format("20060102"), common.RandomString(8),fileExt)
+	err = os.MkdirAll(common.BASE_PATH+ts.BasePath, 0755)
 	if err != nil {
 		fmt.Println("mkdir for record dir error,", err)
 		return
 	}
-	savePath = BasePath + ts.BasePath + fileName
-	err = ts.Context.SaveUploadedFile(file, savePath)
-	//localFile := "C:\\Users\\shjting\\Desktop\\9999.jpg"
-	//var uploadObj  Uploader
-	//uploadObj = NewQiniuUpload(localFile, savePath, inits.Config.Qiniu.AccessKey, inits.Config.Qiniu.SecretKey, inits.Config.Qiniu.Bucket)
-	//savePath ,err = uploadObj.Upload()
+	localFile := common.BASE_PATH  + fileName
+	err = ts.Context.SaveUploadedFile(file, localFile)
+
+	if err != nil {
+		return
+	}
+	storeType := 1
+	if ts.StoreType == 0 {
+		storeType = 1
+	} else {
+		storeType = ts.StoreType
+	}
+	if storeType == common.LOCAL_STORE {
+		savePath = localFile
+	}
+	if storeType == common.QINIU_STORE {
+		var uploadObj  Uploader
+		uploadObj = NewQiniuUpload(localFile, fileName, inits.Config.Qiniu.AccessKey, inits.Config.Qiniu.SecretKey, inits.Config.Qiniu.Bucket)
+		savePath ,err = uploadObj.Upload()
+		if err == nil {
+			os.Remove(localFile)
+		}
+	}
+	if storeType == common.ALIYUN_STORE {
+		// TODO
+		os.Remove(localFile)
+	}
 	return
 }
 

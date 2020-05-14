@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"go-edu/work/common"
 	"go-edu/work/dao"
 	"go-edu/work/entity"
@@ -123,12 +124,14 @@ type UpdateCourseService struct {
 	SeoDescription string `form:"seo_description" binding:"-" json:"seo_description"`
 	Thumb string `form:"thumb" binding:"-" json:"thumb"`
 	Status uint64 `form:"status" binding:"-" json:"status"`
-	PublishedAt string `form:"published_at" binding:"-" json:"published_at"`
+	PublishedAt string`form:"published_at" binding:"-" json:"published_at"`
 	CategoryId uint64 `form:"category_id" binding:"required" json:"category_id"`
 	IsRec uint64 `form:"is_rec" binding:"-" json:"is_rec"`
 }
 
 func (f *UpdateCourseService)Update()(resp *serializer.Response)  {
+	publishedAt, _ := time.ParseInLocation("2006-01-02 15:04", f.PublishedAt, time.Local)
+	//publishedAt := f.PublishedAt[:19]
 	data := map[string]interface{}{
 		"title": f.Title,
 		"status": f.Status,
@@ -137,7 +140,7 @@ func (f *UpdateCourseService)Update()(resp *serializer.Response)  {
 		"seo_description": f.SeoDescription,
 		"seo_keywords": f.SeoKeywords,
 		"thumb": f.Thumb,
-		"published_at": f.PublishedAt,
+		"published_at": publishedAt,
 		"category_id": f.CategoryId,
 		"is_rec": f.IsRec,
 		"updated_at": time.Now(),
@@ -149,6 +152,7 @@ func (f *UpdateCourseService)Update()(resp *serializer.Response)  {
 			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
 			Error: nil,
 		}
+		fmt.Println(err)
 		return
 	}
 	resp = &serializer.Response{

@@ -47,3 +47,15 @@ func Edit(c *gin.Context)  {
 	resp := service.Edit()
 	c.JSON(http.StatusOK, resp)
 }
+func Update(c *gin.Context)  {
+	service := &services.UpdateCourseService{}
+	if err:= c.ShouldBind(service);err !=nil {
+		fmt.Println("err;", err)
+		resp := common.ValidateResponse(err)
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	fmt.Printf("%#v\n", service)
+	resp := service.Update()
+	c.JSON(http.StatusOK, resp)
+}

@@ -14,6 +14,7 @@ import (
 	"go-edu/work/controller/backend/v1/courseCategoryies"
 	"go-edu/work/controller/backend/v1/courses"
 	"go-edu/work/controller/backend/v1/coursesChapter"
+	"go-edu/work/controller/backend/v1/videos"
 	"go-edu/work/controller/common"
 	"go-edu/work/middlewares"
 	"net/http"
@@ -23,6 +24,7 @@ func Routes() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
 	r.Static("/upload", "upload")
+	r.GET("/vod", videos.Auth)
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
@@ -91,6 +93,7 @@ func Routes() (r *gin.Engine)  {
 			v1.GET("/course-chapter/:id/edit", coursesChapter.Edit)
 			v1.PATCH("/course-chapter", coursesChapter.Update)
 			v1.DELETE("/course-chapter", coursesChapter.Delete)
+			// 获取上传凭证
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
@@ -105,10 +108,10 @@ func Routes() (r *gin.Engine)  {
 			// 获取上传凭证
 			upload := &aliVod.CreateUploadVideo{
 				Client:      vodClient,
-				Title:       "毛片",
+				Title:       "好评，太性感了",
 				Description: "小姐姐很正，我很喜欢",
 				CoverURL:    "http://img03.sogoucdn.com/app/a/100520021/8de3c081b9c92c249460c305a934b1f2",
-				Tags:        "行为艺术",
+				Tags:        "漂亮",
 			}
 			response, err := upload.MyCreateUploadVideo()
 			if err != nil {

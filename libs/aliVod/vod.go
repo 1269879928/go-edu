@@ -91,9 +91,9 @@ func UploadLocalFile(client *oss.Client, uploadAddressDTO UploadAddressDTO, loca
 	}
 }
 // 5 刷新上传凭证
-func MyRefreshUploadVideo(client *vod.Client) (response *vod.RefreshUploadVideoResponse, err error) {
+func MyRefreshUploadVideo(client *vod.Client, videoId string) (response *vod.RefreshUploadVideoResponse, err error) {
 	request := vod.CreateRefreshUploadVideoRequest()
-	request.VideoId = ""
+	request.VideoId = videoId
 	request.AcceptFormat = "JSON"
 	return client.RefreshUploadVideo(request)
 }

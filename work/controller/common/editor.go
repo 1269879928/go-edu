@@ -2,9 +2,9 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-edu/libs/upload"
 	"go-edu/work/base/inits"
 	"go-edu/work/common"
-	"go-edu/work/libs/upload"
 	"go-edu/work/serializer"
 	"net/http"
 )

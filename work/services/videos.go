@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"go-edu/libs/aliVod"
+	"go-edu/work/base/inits"
 	"go-edu/work/dao"
 	"go-edu/work/entity"
 	"go-edu/work/httpStatus"
@@ -13,10 +14,7 @@ import (
 // 阿里云视频点播逻辑处理
 // 获取上传凭证
 type AliyunVodUploadCreate struct {
-	Title string
-	Description string
-	CoverURL string
-	Tags string
+	CourseId uint64 `form:"course_id" bingding:"required" json:"course_id"`
 }
 // 创建上传凭证
 func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Response)  {
@@ -30,13 +28,23 @@ func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Respons
 		}
 		return
 	}
+	course, err := dao.CoursesObj.GetOneById(f.CourseId)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data: nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
 	// http://img03.sogoucdn.com/app/a/100520021/8de3c081b9c92c249460c305a934b1f2
 	upload := &aliVod.CreateUploadVideo{
 		Client:      vodClient,
-		Title:       f.Title,
-		Description: f.Description,
-		CoverURL:    f.CoverURL,
-		Tags:        f.Tags,
+		Title:       course.Title,
+		Description: "",
+		CoverURL:    inits.Config.Qiniu.Domain + course.Thumb,
+		Tags:        "test",
 	}
 	response, err := upload.MyCreateUploadVideo()
 	if err != nil {
@@ -56,7 +64,7 @@ func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Respons
 		Msg:   "ok",
 		Error: nil,
 	}
-	return 
+	return
 }
 // 刷新上传凭证
 type AliyunVodUploadRefresh struct {

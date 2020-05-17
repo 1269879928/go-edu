@@ -28,7 +28,7 @@ func UploadImage(c *gin.Context)  {
 	}
 	c.JSON(http.StatusOK, serializer.Response{
 		Code:  0,
-		Data:  map[string]string{"path": "/"+path},
+		Data:  map[string]string{"path": path},
 		Msg:   "上传成功",
 		Error: nil,
 	})

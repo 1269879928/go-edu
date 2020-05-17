@@ -59,3 +59,8 @@ func Update(c *gin.Context)  {
 	resp := service.Update()
 	c.JSON(http.StatusOK, resp)
 }
+func GetCourses(c *gin.Context)  {
+	service := &services.GetCourseService{Status:1}
+	resp := service.GetAllCourses()
+	c.JSON(http.StatusOK, resp)
+}

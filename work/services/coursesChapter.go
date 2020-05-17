@@ -147,3 +147,28 @@ func (f *DeleteCourseChapterService)Delete()(resp *serializer.Response)  {
 	}
 	return
 }
+type CourseChapterCourseService struct {
+	CourseId uint64 `form:"course_id" binding:"required" json:"course_id"`
+}
+
+func (f *CourseChapterCourseService)Delete()(resp *serializer.Response)  {
+	//publishedAt := f.PublishedAt[:19]
+	data, err := dao.CourseChapterObj.GetOneByCourseId(f.CourseId);
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		fmt.Println(err)
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  data,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	return
+}

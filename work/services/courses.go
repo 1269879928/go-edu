@@ -163,3 +163,26 @@ func (f *UpdateCourseService)Update()(resp *serializer.Response)  {
 	}
 	return
 }
+
+type  GetCourseService struct {
+	Status uint64
+}
+func (f *GetCourseService)GetAllCourses() (resp *serializer.Response) {
+	couses,err := dao.CoursesObj.GetAllByStatus(f.Status)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  couses,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	return
+}

@@ -20,6 +20,10 @@ func (*Courses)GetByPaginate(page,pageSize uint64)(res []*entity.Courses, total 
 	tx.Count(&total)
 	return
 }
+func (*Courses)GetAllByStatus(status uint64)(result []entity.Courses, err error) {
+	err = inits.Gorm.Select(coursesColumn).Where("status = ?", status).Find(&result).Error
+	return
+}
 func (*Courses)GetOneById(id uint64)(result entity.Courses, err error) {
 	err = inits.Gorm.Select(coursesColumn).Where("id = ?", id).First(&result).Error
 	return

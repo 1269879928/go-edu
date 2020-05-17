@@ -24,7 +24,7 @@ func Routes() (r *gin.Engine)  {
 	r = gin.Default()
 	r.Use(middlewares.Cors())
 	r.Static("/upload", "upload")
-	r.GET("/vod", videos.Auth)
+	//r.GET("/vod", videos.Auth)
 	v1 := r.Group("/backend/v1")
 	{
 		v1.POST("/administrator/login", administrator.Login)
@@ -54,27 +54,26 @@ func Routes() (r *gin.Engine)  {
 			// 角色
 			v1.GET("/role", administratorRoles.Index)
 			v1.POST("/role", administratorRoles.Create)
-			v1.GET("/role/:id/edit", administratorRoles.Edit)
+			v1.GET("/role/edit/:id", administratorRoles.Edit)
 			v1.GET("/roles", administratorRoles.GetRoles)
 			v1.PATCH("/role", administratorRoles.Update)
 			v1.PATCH("/role/status", administratorRoles.UpdateStatus)
 			// 分配权限
-			v1.PATCH("/role/update-permissions", administratorRoles.UpdatePermissions)
+			v1.PATCH("/role/permissions/update", administratorRoles.UpdatePermissions)
 			// 权限
 			v1.GET("/permissions", administratorPermissions.GetPermissions)
 			v1.GET("/permission", administratorPermissions.Index)
 			v1.GET("/permission-list", administratorPermissions.PermissionsList)
 			v1.POST("/permission", administratorPermissions.Create)
-			v1.GET("/permission/:id/edit", administratorPermissions.Edit)
+			v1.GET("/permission/edit/:id", administratorPermissions.Edit)
 			v1.PATCH("/permission", administratorPermissions.Update)
 			v1.DELETE("/permission/:id", administratorPermissions.Delete)
 			v1.GET("/set-permission", administratorPermissions.SetPermission)
 			// 课程分类
 			v1.POST("/course-categories", courseCategoryies.Create)
 			v1.GET("/course-categories", courseCategoryies.Index)
-
-			v1.GET("/course-categories/:id/edit", courseCategoryies.Edit)
-			v1.GET("/course-categories-all", courseCategoryies.GetAll)
+			v1.GET("/course-categories/edit/:id", courseCategoryies.Edit)
+			v1.GET("/course-categories/all", courseCategoryies.GetAll)
 			v1.PATCH("/course-categories", courseCategoryies.Update)
 			v1.DELETE("/course-categories", courseCategoryies.Delete)
 
@@ -85,15 +84,18 @@ func Routes() (r *gin.Engine)  {
 			// 课程
 			v1.POST("/courses", courses.Create)
 			v1.GET("/courses", courses.Index)
-			v1.GET("/courses/:id/edit", courses.Edit)
+			v1.GET("/courses/edit/:id", courses.Edit)
+			v1.GET("/courses/all", courses.GetCourses)
 			v1.PATCH("/courses", courses.Update)
 			// 章节
 			v1.POST("/course-chapter", coursesChapter.Create)
 			v1.GET("/course-chapter", coursesChapter.Index)
-			v1.GET("/course-chapter/:id/edit", coursesChapter.Edit)
+			v1.GET("/course-chapter/edit/:id", coursesChapter.Edit)
 			v1.PATCH("/course-chapter", coursesChapter.Update)
 			v1.DELETE("/course-chapter", coursesChapter.Delete)
+			v1.GET("/course-chapter/chapter-course/:course_id", coursesChapter.GetChapterByCourse)
 			// 获取上传凭证
+			v1.GET("/vod/auth-token", videos.AliyunVodAuthTokenCreate)
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

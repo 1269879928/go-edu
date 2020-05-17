@@ -72,3 +72,15 @@ func Delete(c *gin.Context)  {
 	resp := service.Delete()
 	c.JSON(http.StatusOK, resp)
 }
+func GetChapterByCourse(c *gin.Context)  {
+	_id := c.Param("course_id")
+	id,err := strconv.ParseUint(_id, 10, 64)
+	service := &services.CourseChapterCourseService{CourseId: id}
+	if err !=nil {
+		resp := common.ValidateResponse(err)
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	resp := service.Delete()
+	c.JSON(http.StatusOK, resp)
+}

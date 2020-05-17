@@ -13,7 +13,6 @@ require (
 	github.com/go-openapi/spec v0.19.7 // indirect
 	github.com/go-openapi/swag v0.19.9 // indirect
 	github.com/go-playground/validator/v10 v10.2.0
-	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/golang/protobuf v1.4.0 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/gravityblast/fresh v0.0.0-20190826141211-0fa698148017 // indirect

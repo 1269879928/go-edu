@@ -24,6 +24,10 @@ func (*CourseChapter)GetOneById(id uint64)(result entity.CourseChapter, err erro
 	err = inits.Gorm.Select("id, title, sort,course_id, created_at, updated_at").Where("id = ?", id).First(&result).Error
 	return
 }
+func (*CourseChapter)GetOneByCourseId(courseId uint64)(result []entity.CourseChapter, err error) {
+	err = inits.Gorm.Select("id, title, sort,course_id, created_at, updated_at").Where("course_id = ?", courseId).Find(&result).Error
+	return
+}
 func (*CourseChapter)Update(id uint64, data map[string]interface{}) (err error) {
 
 	err = inits.Gorm.Model(&entity.CourseChapter{Id: id}).Omit("id").Update(data).Error

@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-edu/work/common"
 	"go-edu/work/serializer"
@@ -39,7 +38,6 @@ func AuthRequired() gin.HandlerFunc {
 		}
 		c.Set("Email", result.Email)
 		c.Set("UserId", result.UserId)
-		fmt.Println("currentUserId:", result.UserId)
 		// TODO 权限验证
 		//c.Set("Token", result.Token)
 		c.Next()
@@ -47,7 +45,6 @@ func AuthRequired() gin.HandlerFunc {
 	}
 }
 func refreshJwt(c *gin.Context) {
-	fmt.Printf("c::%#v\n", c.ContentType())
 	c.JSON(200, gin.H{
 		"token": c.Keys["Token"],
 	})

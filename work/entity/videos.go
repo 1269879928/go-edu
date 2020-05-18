@@ -14,9 +14,11 @@ type Videos struct {
 	SeoDescription string `gorm:"type:varchar(200);not null;default:'';comment:'seo描述'" json:"seo_description"`
 	SeoKeywords string `gorm:"type:varchar(255);not null;default:'';comment:'seo关键词'" json:"seo_keywords"`
 	Url string `gorm:"type:varchar(255);not null;comment:'播放地址'"`
-	AliyunVideoId uint64 `gorm:"type:int;not null;default:0;comment:'阿里云短视频Id'" json:"aliyun_video_id"`
+	AliyunVideoId string `gorm:"type:varchar(200);not null;default:0;comment:'阿里云短视频Id'" json:"aliyun_video_id"`
 	Duration uint64 `gorm:"type:int;not null;default:0;comment:'时长(秒)'" json:"duration"`
 	Status uint64 `gorm:"type:tinyint(1);not null;default:1;comment:'状态(0隐藏，1显示)'" json:"status"`
+	Course Courses `gorm:"foreignkey:CourseId"`
+	Chapter CourseChapter `gorm:"foreignkey:chapter_id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
  }

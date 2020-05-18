@@ -16,7 +16,7 @@ func (*CourseChapter)Create(data *entity.CourseChapter)(result *entity.CourseCha
 }
 func (*CourseChapter)GetByPaginate(courseId,page,pageSize uint64)(res []*entity.CourseChapter, total int, err error)  {
 	tx := inits.Gorm.Model(&entity.CourseChapter{})
-	err = tx.Select("id, title, sort, created_at, updated_at").Where("course_id = ?", courseId).Offset((page - 1) * pageSize).Limit(pageSize).Find(&res).Error
+	err = tx.Select("id, title, sort, created_at, updated_at").Where("course_id = ?", courseId).Order("sort desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&res).Error
 	tx.Count(&total)
 	return
 }

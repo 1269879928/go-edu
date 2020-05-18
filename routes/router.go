@@ -94,8 +94,12 @@ func Routes() (r *gin.Engine)  {
 			v1.PATCH("/course-chapter", coursesChapter.Update)
 			v1.DELETE("/course-chapter", coursesChapter.Delete)
 			v1.GET("/course-chapter/chapter-course/:course_id", coursesChapter.GetChapterByCourse)
-			// 获取上传凭证
+			// 获取阿里云视频上传凭证
 			v1.GET("/vod/auth-token", videos.AliyunVodAuthTokenCreate)
+			v1.GET("/vod/auth-token/refresh/:video_id", videos.AliyunAuthTokenRefresh)
+			// 视频
+			v1.POST("/video", videos.Create)
+			v1.GET("/video", videos.Index)
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

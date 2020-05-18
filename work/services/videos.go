@@ -3,7 +3,6 @@ package services
 import (
 	"fmt"
 	"go-edu/libs/aliVod"
-	"go-edu/work/base/inits"
 	"go-edu/work/dao"
 	"go-edu/work/entity"
 	"go-edu/work/httpStatus"
@@ -14,7 +13,8 @@ import (
 // 阿里云视频点播逻辑处理
 // 获取上传凭证
 type AliyunVodUploadCreate struct {
-	CourseId uint64 `form:"course_id" bingding:"required" json:"course_id"`
+	FileName string `form:"file_name" bingding:"required" json:"file_name"`
+	//CourseId uint64 `form:"course_id" bingding:"-" json:"course_id"`
 }
 // 创建上传凭证
 func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Response)  {
@@ -28,7 +28,7 @@ func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Respons
 		}
 		return
 	}
-	course, err := dao.CoursesObj.GetOneById(f.CourseId)
+	//course, err := dao.CoursesObj.GetOneById(f.CourseId)
 	if err != nil {
 		resp = &serializer.Response{
 			Code:  httpStatus.OPERATION_WRONG,
@@ -41,9 +41,9 @@ func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Respons
 	// http://img03.sogoucdn.com/app/a/100520021/8de3c081b9c92c249460c305a934b1f2
 	upload := &aliVod.CreateUploadVideo{
 		Client:      vodClient,
-		Title:       course.Title,
-		Description: "",
-		CoverURL:    inits.Config.Qiniu.Domain + course.Thumb,
+		Title:       f.FileName,
+		Description: f.FileName,
+		CoverURL:    "",
 		Tags:        "test",
 	}
 	response, err := upload.MyCreateUploadVideo()
@@ -57,7 +57,7 @@ func (f *AliyunVodUploadCreate)AliyunAuthTokenCreate() (resp *serializer.Respons
 		fmt.Println("UploadVideo failed , err:", err)
 		return
 	}
-	fmt.Printf("videoid:%#v\n, auth: %#v\n, address:%#v\n", response.VideoId, response.UploadAddress, response.UploadAuth)
+	//fmt.Printf("videoid:%#v\n, auth: %#v\n, address:%#v\n", response.VideoId, response.UploadAddress, response.UploadAuth)
 	resp = &serializer.Response{
 		Code:  httpStatus.SUCCESS_STATUS,
 		Data:  map[string]string{"video_id": response.VideoId, "upload_address": response.UploadAddress, "upload_auth": response.UploadAuth},
@@ -106,15 +106,15 @@ func (f *AliyunVodUploadRefresh)AliyunAuthTokenRefresh() (resp *serializer.Respo
 type CreateVideosService struct {
 	CourseId uint64 `form:"course_id" binding:"required" json:"course_id"`
 	ChapterId uint64 `form:"chapter_id" binding:"required" json:"chapter_id"`
-	IsFree uint64 `form:"is_free" binding:"-" json:"is_free"`
+	IsFree uint64 `form:"is_free" json:"is_free"`
 	Title string `form:"title" binding:"required" json:"title"`
-	Description string `form:"description" binding:"-" json:"description"`
-	SeoDescription string  `form:"seo_description" binding:"-" json:"seo_description"`
-	SeoKeywords string  `form:"seo_keywords" binding:"-" json:"seo_keywords"`
-	Url string `form:"url" binding:"-" json:"url"`
-	AliyunVideoId uint64 `form:"aliyun_video_id" binding:"-" json:"aliyun_video_id"`
-	Duration uint64 `form:"duration" binding:"-" json:"duration"`
-	Status uint64 `form:"status" binding:"status" json:"status"`
+	Description string `form:"description" json:"description"`
+	SeoDescription string  `form:"seo_description" json:"seo_description"`
+	SeoKeywords string  `form:"seo_keywords" json:"seo_keywords"`
+	Url string `form:"url" json:"url"`
+	AliyunVideoId string `form:"aliyun_video_id" json:"aliyun_video_id"`
+	Duration uint64 `form:"duration" json:"duration"`
+	Status uint64 `form:"status" json:"status"`
 }
 func (f *CreateVideosService)Create() (resp *serializer.Response) {
 	data := &entity.Videos{
@@ -148,6 +148,33 @@ func (f *CreateVideosService)Create() (resp *serializer.Response) {
 	}
 	return
 }
+
+// 分页列表
+type IndexVideosService struct {
+	Page uint64 `form:"page" binding:"required"`
+	PageSize uint64 `form:"pageSize" binding:"required"`
+}
+
+func (f *IndexVideosService)Index() (resp *serializer.Response) {
+	data,count, err := dao.VideosDaoObj.GetByPaginate(f.Page, f.PageSize)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  map[string]interface{}{"list":data, "total":count},
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+		Error: nil,
+	}
+	return
+}
+
 
 type EditVideosService struct {
 	Id uint64 `form:"id" binding:"required" json:"id"`

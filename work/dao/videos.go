@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"fmt"
 	"go-edu/work/base/inits"
 	"go-edu/work/entity"
 )
@@ -15,14 +14,18 @@ func (*VideosDao)Create(data *entity.Videos)(result *entity.Videos, err error)  
 	result = data
 	return
 }
-func (*VideosDao)GetByPaginate(page,pageSize uint64)(res []entity.Videos, total int, err error)  {
+func (*VideosDao)GetByPaginate(page,pageSize, courseId, chapterId uint64, title string)(res []*entity.Videos, total int, err error)  {
 	tx := inits.Gorm.Model(&entity.Videos{})
-	var course entity.Courses
-	//videos := []entity.Videos
-	err = tx.Select(VideosColumn).Offset((page - 1) * pageSize).Limit(pageSize).Find(&res).Related(&course, "Course").Error
-	//inits.Gorm.Model(&res).Related(&course, "Course")
-	//fmt.Printf("%#v\n", videos)
-	fmt.Printf("%#v\n", course)
+	if courseId > 0 {
+		tx = tx.Where("course_id = ?", courseId)
+	}
+	if chapterId > 0 {
+		tx = tx.Where("chapter_id = ?", chapterId)
+	}
+	if len(title) > 0 {
+		tx = tx.Where("title LIKE ?", "%" + title + "%")
+	}
+	err = tx.Select(VideosColumn).Offset((page - 1) * pageSize).Limit(pageSize).Find(&res).Error
 	tx.Count(&total)
 	return
 }
@@ -35,7 +38,6 @@ func (*VideosDao)Update(id uint64, data map[string]interface{}) (err error) {
 	return
 }
 func (*VideosDao)Delete(data *entity.Videos) (err error) {
-
 	err = inits.Gorm.Delete(data).Error
 	return
 }

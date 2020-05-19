@@ -38,8 +38,8 @@ func (*CourseChapter)Delete(data *entity.CourseChapter) (err error) {
 	err = inits.Gorm.Delete(data).Error
 	return
 }
-//func (*CreateCourseCategories)(id uint64, data map[string]interface{}) (err error) {
-//
-//	err = inits.Gorm.Model(&entity.CourseCategories{Id: id}).Omit("id").Update(data).Error
-//	return
-//}
+// in 范围查询
+func (*CourseChapter)GetSomeByIds(ids []uint64) (data []*entity.CourseChapter, err error) {
+	err = inits.Gorm.Model(&entity.CourseChapter{}).Select("id, title, sort,course_id, created_at").Where("id IN (?)", ids).Find(&data).Error
+	return
+}

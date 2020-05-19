@@ -100,6 +100,9 @@ func Routes() (r *gin.Engine)  {
 			// 视频
 			v1.POST("/video", videos.Create)
 			v1.GET("/video", videos.Index)
+			v1.GET("/video/edit/:id", videos.Edit)
+			v1.PATCH("/video", videos.Update)
+			v1.DELETE("/video", videos.Delete)
 		}
 		url := ginSwagger.URL("http://192.168.1.104:3000/swagger/doc.json")
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

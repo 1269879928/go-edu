@@ -8,6 +8,7 @@ import (
 	"go-edu/work/serializer"
 	"go-edu/work/services"
 	"net/http"
+	"strconv"
 )
 
 func AliyunVodAuthTokenCreate(c *gin.Context)  {
@@ -41,7 +42,6 @@ func AliyunAuthTokenRefresh(c *gin.Context)  {
 func Create(c *gin.Context)  {
 	service := &services.CreateVideosService{}
 	if err := c.ShouldBind(service); err !=nil {
-		fmt.Println(err)
 		resp :=common.ValidateResponse(err)
 		c.JSON(http.StatusOK, resp)
 		return
@@ -53,10 +53,47 @@ func Index(c *gin.Context) {
 	service := &services.IndexVideosService{}
 	if err := c.ShouldBind(service);err != nil {
 		resp := common.ValidateResponse(err)
-		fmt.Println(err)
 		c.JSON(http.StatusOK, resp)
 		return
 	}
 	resp := service.Index()
+	c.JSON(http.StatusOK, resp)
+}
+func Edit(c *gin.Context)  {
+	_id := c.Param("id")
+	id, err := strconv.ParseUint(_id, 10, 64)
+	if err !=nil {
+		resp := &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	service := &services.EditVideosService{Id: id}
+	fmt.Printf("data:%v\n",service)
+	resp := service.Edit()
+	c.JSON(http.StatusOK, resp)
+}
+func Update(c *gin.Context) {
+	service := &services.UpdateVideosService{}
+	if err := c.ShouldBind(service);err != nil {
+		resp := common.ValidateResponse(err)
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	resp := service.Update()
+	c.JSON(http.StatusOK, resp)
+}
+func Delete(c *gin.Context) {
+	service := &services.DeleteVideosService{}
+	if err := c.ShouldBind(service);err != nil {
+		resp := common.ValidateResponse(err)
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	resp := service.Delete()
 	c.JSON(http.StatusOK, resp)
 }

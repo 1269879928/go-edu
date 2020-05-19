@@ -153,10 +153,13 @@ func (f *CreateVideosService)Create() (resp *serializer.Response) {
 type IndexVideosService struct {
 	Page uint64 `form:"page" binding:"required"`
 	PageSize uint64 `form:"pageSize" binding:"required"`
+	Title string `form:"title"`
+	CourseId uint64 `form:"course_id"`
+	ChapterId uint64 `form:"chapter_id"`
 }
 
 func (f *IndexVideosService)Index() (resp *serializer.Response) {
-	data,count, err := dao.VideosDaoObj.GetByPaginate(f.Page, f.PageSize)
+	data,count, err := dao.VideosDaoObj.GetByPaginate(f.Page, f.PageSize, f.CourseId, f.ChapterId, f.Title)
 	if err != nil {
 		resp = &serializer.Response{
 			Code:  httpStatus.OPERATION_WRONG,
@@ -165,6 +168,46 @@ func (f *IndexVideosService)Index() (resp *serializer.Response) {
 			Error: nil,
 		}
 		return
+	}
+	if len(data) > 0 {
+		courseIds := make([]uint64,0)
+		chapterIds := make([]uint64,0)
+		for _, item := range data {
+			courseIds = append(courseIds, item.CourseId)
+			chapterIds = append(chapterIds, item.ChapterId)
+		}
+		chapters, err := dao.CourseChapterObj.GetSomeByIds(chapterIds)
+		if err != nil {
+			resp = &serializer.Response{
+				Code:  httpStatus.OPERATION_WRONG,
+				Data:  nil,
+				Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+				Error: nil,
+			}
+			return
+		}
+		courses, err := dao.CoursesObj.GetSomeByIds(courseIds)
+		if err != nil {
+			resp = &serializer.Response{
+				Code:  httpStatus.OPERATION_WRONG,
+				Data:  nil,
+				Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+				Error: nil,
+			}
+			return
+		}
+		for _, video := range data {
+			for _, chapter := range chapters {
+				if video.ChapterId == chapter.Id {
+					video.Chapter = chapter
+				}
+			}
+			for _, course := range courses {
+				if video.CourseId == course.Id {
+					video.Course = course
+				}
+			}
+		}
 	}
 	resp = &serializer.Response{
 		Code:  httpStatus.SUCCESS_STATUS,
@@ -180,8 +223,23 @@ type EditVideosService struct {
 	Id uint64 `form:"id" binding:"required" json:"id"`
 }
 
-func (f *EditVideosService)Edit()  {
-
+func (f *EditVideosService)Edit() (resp *serializer.Response) {
+	data , err := dao.VideosDaoObj.GetOneById(f.Id)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  data,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
 }
 type UpdateVideosService struct {
 	Id uint64 `form:"id" binding:"required" json:"id"`
@@ -193,10 +251,60 @@ type UpdateVideosService struct {
 	SeoDescription string  `form:"seo_description" binding:"-" json:"seo_description"`
 	SeoKeywords string  `form:"seo_keywords" binding:"-" json:"seo_keywords"`
 	Url string `form:"url" binding:"-" json:"url"`
-	AliyunVideoId uint64 `form:"aliyun_video_id" binding:"-" json:"aliyun_video_id"`
+	AliyunVideoId string `form:"aliyun_video_id" binding:"-" json:"aliyun_video_id"`
 	Duration uint64 `form:"duration" binding:"-" json:"duration"`
-	Status uint64 `form:"status" binding:"status" json:"status"`
+	Status uint64 `form:"status" json:"status"`
 }
-func (f *UpdateVideosService)Update()  {
-
+func (f *UpdateVideosService)Update() (resp *serializer.Response) {
+	data := map[string]interface{}{
+		"course_id": f.CourseId,
+		"chapter_id": f.ChapterId,
+		"is_free": f.IsFree,
+		"title": f.Title,
+		"description": f.Description,
+		"seo_description": f.SeoDescription,
+		"seo_keywords": f.SeoKeywords,
+		"url": f.Url,
+		"aliyun_video_id": f.AliyunVideoId,
+		"duration": f.Duration,
+		"status": f.Status,
+	}
+	err := dao.VideosDaoObj.Update(f.Id, data)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  data,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
+}
+type DeleteVideosService struct {
+	Id uint64 `form:"id" binding:"required" json:"id"`
+}
+func (f *DeleteVideosService)Delete() (resp *serializer.Response) {
+	data := &entity.Videos{Id: f.Id}
+	err := dao.VideosDaoObj.Delete(data)
+	if err != nil {
+		resp = &serializer.Response{
+			Code:  httpStatus.OPERATION_WRONG,
+			Data:  nil,
+			Msg:   httpStatus.GetCode2Msg(httpStatus.OPERATION_WRONG),
+			Error: nil,
+		}
+		return
+	}
+	resp = &serializer.Response{
+		Code:  httpStatus.SUCCESS_STATUS,
+		Data:  data,
+		Msg:   httpStatus.GetCode2Msg(httpStatus.SUCCESS_STATUS),
+	}
+	return
 }

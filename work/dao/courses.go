@@ -38,3 +38,8 @@ func (*Courses)Update(id uint64, data map[string]interface{}) (err error) {
 //	err = inits.Gorm.Model(&entity.CourseCategories{Id: id}).Omit("id").Update(data).Error
 //	return
 //}
+// in 范围查询
+func (*Courses)GetSomeByIds(ids []uint64) (res []*entity.Courses, err error) {
+	err = inits.Gorm.Model(&entity.Courses{}).Select(coursesColumn).Where("id IN (?)", ids).Find(&res).Error
+	return
+}

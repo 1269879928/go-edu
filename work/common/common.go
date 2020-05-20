@@ -42,7 +42,7 @@ type CurrentUserInfo struct {
 	ExpiresAt int64 `json:"expires_at"`
 	Token string `json:"token"`
 }
-func GenJWT(userId uint64, email string, ip string) string  {
+func GenJWT(userId uint64, email string, ip string, expires int64) string  {
 
 	mySigningKey := []byte(inits.Config.Jwt.Key)
 	type MyCustomClaims struct {
@@ -58,7 +58,7 @@ func GenJWT(userId uint64, email string, ip string) string  {
 		userId,
 		ip,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Unix() + inits.Config.Jwt.Expires,
+			ExpiresAt: time.Now().Unix() + expires,
 			Issuer:    "shjting",
 		},
 	}

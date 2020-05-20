@@ -14,6 +14,7 @@ import (
 	"go-edu/work/controller/backend/v1/courseCategoryies"
 	"go-edu/work/controller/backend/v1/courses"
 	"go-edu/work/controller/backend/v1/coursesChapter"
+	"go-edu/work/controller/backend/v1/login"
 	"go-edu/work/controller/backend/v1/videos"
 	"go-edu/work/controller/common"
 	"go-edu/work/middlewares"
@@ -27,7 +28,9 @@ func Routes() (r *gin.Engine)  {
 	//r.GET("/vod", videos.Auth)
 	v1 := r.Group("/backend/v1")
 	{
-		v1.POST("/administrator/login", administrator.Login)
+		v1.POST("/administrator/login", login.Login)
+		v1.GET("/geetest", login.RegisterGeetest)
+		v1.POST("/geetest", login.ValidateGeetest)
 		v1.GET("/video/auth", func(context *gin.Context) {
 			vodClient, err := aliVod.InitVodClient()
 			if err != nil {

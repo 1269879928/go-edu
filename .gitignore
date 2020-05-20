@@ -4,3 +4,5 @@ conf/config.json
 *.exe
 vendor
 Dockerfile
+upload/*
+tmp

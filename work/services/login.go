@@ -1,6 +1,7 @@
 package services
 
 import (
+	"go-edu/work/base/inits"
 	"go-edu/work/common"
 	"go-edu/work/dao"
 	"go-edu/work/httpStatus"
@@ -10,6 +11,7 @@ import (
 type LoginForm struct {
 	Email string `form:"email" binding:"required,email,gt=5,lt=20"`
 	Password string `form:"password" binding:"required"`
+	Token string `form:"token" binding:"required"`
 	RemoteAddr string
 }
 // 登录
@@ -32,7 +34,7 @@ func (l *LoginForm)Login() (result *serializer.Response) {
 		}
 		return
 	}
-	jwt := common.GenJWT(admin.ID, admin.Email, l.RemoteAddr)
+	jwt := common.GenJWT(admin.ID, admin.Email, l.RemoteAddr, inits.Config.Jwt.Expires)
 	result = &serializer.Response{
 		Code:  httpStatus.SUCCESS_STATUS,
 		Msg:   "login success",

@@ -3,6 +3,7 @@ module go-edu
 go 1.12
 
 require (
+	github.com/GeeTeam/gt3-golang-sdk v0.0.0-20200116043922-446ca8a507d2
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.170
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.0+incompatible
@@ -15,6 +16,7 @@ require (
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/golang/protobuf v1.4.0 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
+	github.com/gorilla/sessions v1.2.0
 	github.com/gravityblast/fresh v0.0.0-20190826141211-0fa698148017 // indirect
 	github.com/heyuanlong/go-tools v0.0.0-20200109124137-5b7d1af046d1 // indirect
 	github.com/howeyc/fsnotify v0.9.0 // indirect

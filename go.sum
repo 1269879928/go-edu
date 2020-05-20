@@ -1,4 +1,6 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/GeeTeam/gt3-golang-sdk v0.0.0-20200116043922-446ca8a507d2 h1:KBk8MKqHvIztjEW4KAKnR9VPT4iTZYz0D4Ju0GFVsV0=
+github.com/GeeTeam/gt3-golang-sdk v0.0.0-20200116043922-446ca8a507d2/go.mod h1:vqCh/LExdPmL5SULXE/9DHbuE4t3iLkzRYoNGxEvg/o=
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
 github.com/PuerkitoBio/purell v1.1.0 h1:rmGxhojJlM0tuKtfdvliR84CFHljx9ag64t2xmVkjK4=
@@ -90,6 +92,10 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/google/gofuzz v1.1.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
+github.com/gorilla/securecookie v1.1.1 h1:miw7JPhV+b/lAHSXz4qd/nN9jRiAFV5FwjeKyCS8BvQ=
+github.com/gorilla/securecookie v1.1.1/go.mod h1:ra0sb63/xPlUeL+yeDciTfxMRAA+MP+HVt/4epWDjd4=
+github.com/gorilla/sessions v1.2.0 h1:S7P+1Hm5V/AT9cjEcUD5uDaQSX0OE577aCXgoaKpYbQ=
+github.com/gorilla/sessions v1.2.0/go.mod h1:dk2InVEVJ0sfLlnXv9EAgkf6ecYs/i80K/zI+bUmuGM=
 github.com/gravityblast/fresh v0.0.0-20190826141211-0fa698148017 h1:9uTAQTzZgATdsDd46NleCCKSTRFrvcqz8l/EnARFKEo=
 github.com/gravityblast/fresh v0.0.0-20190826141211-0fa698148017/go.mod h1:ukFDwXV66bGV7JnfyxFKuKiVp4zH4orBKXML+VCSrhI=
 github.com/heyuanlong/go-tools v0.0.0-20200109124137-5b7d1af046d1 h1:cJ20/FCSW1WKLHm+UTcEZNq3Hh/OXonsT0EkFoP8gGw=

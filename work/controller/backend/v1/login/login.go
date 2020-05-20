@@ -99,7 +99,7 @@ func ValidateGeetest(c *gin.Context) {
 		geetestRes = geetest.FailbackValidate(form.GeetestChallenge, form.GeetestValidate, form.GeetestSeccode)
 	}
 	if geetestRes {
-		validateToken := common.GenJWT(0, "", c.ClientIP(), 600)
+		validateToken := common.GenJWT(0, "", c.ClientIP(), 300)
 		res["code"] = 0
 		res["msg"] = "Success"
 		res["token"] = validateToken

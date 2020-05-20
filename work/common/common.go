@@ -86,7 +86,7 @@ func VerifyJWT(tokenString string) (info *CurrentUserInfo, err error)  {
 		ip := claims.Ip
 		// 当前token即将过期，生成新token
 		if expiresAt - time.Now().Unix() < 20 {
-			tokenString = GenJWT(userId, email, ip)
+			tokenString = GenJWT(userId, email, ip, inits.Config.Jwt.Expires)
 		}
 		info = &CurrentUserInfo{
 			Email:  email,

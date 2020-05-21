@@ -3,7 +3,7 @@ package common
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"go-edu/work/base/inits"
+	"github.com/shijting/go-edu/work/base/inits"
 	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"time"

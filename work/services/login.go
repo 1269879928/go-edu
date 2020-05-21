@@ -1,11 +1,11 @@
 package services
 
 import (
-	"go-edu/work/base/inits"
-	"go-edu/work/common"
-	"go-edu/work/dao"
-	"go-edu/work/httpStatus"
-	"go-edu/work/serializer"
+	"github.com/shijting/go-edu/work/base/inits"
+	"github.com/shijting/go-edu/work/common"
+	"github.com/shijting/go-edu/work/dao"
+	"github.com/shijting/go-edu/work/httpStatus"
+	"github.com/shijting/go-edu/work/serializer"
 )
 
 type LoginForm struct {

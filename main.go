@@ -1,9 +1,9 @@
 package main
 
 import (
-	_ "go-edu/docs"
-	"go-edu/routes"
-	"go-edu/work/base/inits"
+	_ "github.com/shijting/go-edu/docs"
+	"github.com/shijting/go-edu/routes"
+	"github.com/shijting/go-edu/work/base/inits"
 )
 // @title 后端相关
 // @version 1.0

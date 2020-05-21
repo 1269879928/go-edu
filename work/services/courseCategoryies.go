@@ -1,10 +1,10 @@
 package services
 
 import (
-	"go-edu/work/dao"
-	"go-edu/work/entity"
-	"go-edu/work/httpStatus"
-	"go-edu/work/serializer"
+	"github.com/shijting/go-edu/work/dao"
+	"github.com/shijting/go-edu/work/entity"
+	"github.com/shijting/go-edu/work/httpStatus"
+	"github.com/shijting/go-edu/work/serializer"
 )
 
 type CreateCourseCategoriesService struct {

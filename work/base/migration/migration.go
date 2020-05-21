@@ -1,8 +1,8 @@
 package migration
 
 import (
-	"go-edu/work/base/inits"
-	"go-edu/work/entity"
+	"github.com/shijting/go-edu/work/base/inits"
+	"github.com/shijting/go-edu/work/entity"
 )
 
 // 数据迁移

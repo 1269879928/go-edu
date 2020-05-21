@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"go-edu/work/common"
-	"go-edu/work/services"
+	"github.com/shijting/go-edu/work/common"
+	"github.com/shijting/go-edu/work/services"
 	"net/http"
 	"strconv"
 )

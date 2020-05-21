@@ -1,1 +1,1 @@
-# go-edu
+# github.com/shijting/go-edu

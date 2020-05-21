@@ -3,9 +3,9 @@ package administratorPermissions
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"go-edu/work/common"
-	"go-edu/work/serializer"
-	"go-edu/work/services"
+	"github.com/shijting/go-edu/work/common"
+	"github.com/shijting/go-edu/work/serializer"
+	"github.com/shijting/go-edu/work/services"
 	"net/http"
 	"strconv"
 )

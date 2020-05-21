@@ -6,7 +6,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/vod"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"go-edu/work/base/inits"
+	"github.com/shijting/go-edu/work/base/inits"
 	"os"
 )
 type UploadAuthDTO struct {

@@ -2,8 +2,8 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-edu/work/common"
-	"go-edu/work/serializer"
+	"github.com/shijting/go-edu/work/common"
+	"github.com/shijting/go-edu/work/serializer"
 	"net/http"
 )
 
